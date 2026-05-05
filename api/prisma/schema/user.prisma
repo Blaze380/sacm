@@ -1,22 +1,149 @@
 model User {
-  id                   String    @id @default(uuid())
-  email  String   @unique
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  role                 UserRole   @default(UTILIZADOR)
+  firstName            String
+  lastName             String
+  phone                String
+  birthDate            DateTime
+  province             Province
+  city                 String
+  neighborhood         String
+  doctorAvailability   Json
+  doctorSpecialtyId    String?
+  doctorSpecialty      Specialty? @relation(fields: [doctorSpecialtyId], references: [id])
   password             String
   passwordChangedAt    DateTime?
   lastLoginAt          DateTime?
-  isSuperUser          Boolean   @default(false)
-  isStaff              Boolean   @default(false)
+  isSuperUser          Boolean    @default(false)
+  isStaff              Boolean    @default(false)
   deletedSelfAccountAt DateTime?
-  isActive             Boolean   @default(true)
-  role                 UserRole  @default(User)
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  isActive             Boolean    @default(true)
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
   // other fields for your application
+
+  notifications Notification[]
+
+  triages Triage[]
+
+  triageAnalyzedBy Triage[] @relation("TriageAnalyzedBy")
+
+  appointments Appointment[] @relation("PatientAppointments")
+
+  appointmentsDoctor Appointment[] @relation("DoctorAppointments")
+}
+
+model Specialty {
+  id    String @id @default(uuid())
+  name  String
+  users User[]
+
+  appointments Appointment[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ConsultationType {
+  id   String @id @default(uuid())
+  name String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  appointments Appointment[]
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Triage {
+  id                  String       @id @default(uuid())
+  complaint           String
+  symptomDuration     String
+  symptomTaken        String
+  actionTaken         String
+  reactionAfterAction String
+  status              TriageStatus @default(PENDENTE)
+  patientId           String
+  patient             User         @relation(fields: [patientId], references: [id])
+  analyzedById        String?
+  analyzedBy          User?        @relation("TriageAnalyzedBy", fields: [analyzedById], references: [id])
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String            @id @default(uuid())
+  date        DateTime
+  patientId   String
+  patient     User              @relation("PatientAppointments", fields: [patientId], references: [id])
+  specialtyId String
+  specialty   Specialty         @relation(fields: [specialtyId], references: [id])
+  consultationTypeId String
+  consultationType   ConsultationType @relation(fields: [consultationTypeId], references: [id])
+  doctorId    String?
+  doctor      User?             @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  triageId    String?
+  triage      Triage?           @relation(fields: [triageId], references: [id])
+  notes       String?
+  status      AppointmentStatus @default(AGENDADA)
+  priority    PriorityLevel     @default(MEDIA)
+  source      AppointmentSource @default(DIRECTA)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+enum AppointmentStatus {
+  AGENDADA
+  CANCELADA
+  REAGENDADA
+  CONCLUIDA
+}
+
+enum PriorityLevel {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum AppointmentSource {
+  TRIAGEM
+  DIRECTA
+}
+
+enum TriageStatus {
+  PENDENTE
+  EM_ANALISE
+  CANCELADO
+  REENCAMINHADO
 }
 
 enum UserRole {
-  Admin
-  User
+  UTILIZADOR
+  ADMINISTRADOR
+  RECEPCIONISTA
   // change or add new roles
 }
 
+enum Province {
+  MAPUTO
+  XAI_XAI
+  INHAMBANE
+  SOFALA
+  MANICA
+  TETE
+  ZAMBEZIA
+  NAMPULA
+  NIASSA
+  CABO_DELGADO
+}
