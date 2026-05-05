@@ -1,0 +1,41 @@
+
+model Appointment {
+  id          String            @id @default(uuid())
+  date        DateTime
+  patientId   String
+  patient     User              @relation("PatientAppointments", fields: [patientId], references: [id])
+  specialtyId String
+  specialty   Specialty         @relation(fields: [specialtyId], references: [id])
+  consultationTypeId String
+  consultationType   ConsultationType @relation(fields: [consultationTypeId], references: [id])
+  doctorId    String?
+  doctor      User?             @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  triageId    String?
+  triage      Triage?           @relation(fields: [triageId], references: [id])
+  notes       String?
+  status      AppointmentStatus @default(AGENDADA)
+  priority    PriorityLevel     @default(MEDIA)
+  source      AppointmentSource @default(DIRECTA)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+
+
+enum AppointmentStatus {
+  AGENDADA
+  CANCELADA
+  REAGENDADA
+  CONCLUIDA
+}
+
+enum PriorityLevel {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum AppointmentSource {
+  TRIAGEM
+  DIRECTA
+}

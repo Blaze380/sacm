@@ -1,0 +1,25 @@
+
+model Triage {
+  id                  String       @id @default(uuid())
+  complaint           String
+  symptomDuration     String
+  symptomTaken        String
+  actionTaken         String
+  reactionAfterAction String
+  status              TriageStatus @default(PENDENTE)
+  patientId           String
+  patient             User         @relation(fields: [patientId], references: [id])
+  analyzedById        String?
+  analyzedBy          User?        @relation("TriageAnalyzedBy", fields: [analyzedById], references: [id])
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  appointments Appointment[]
+}
+
+enum TriageStatus {
+  PENDENTE
+  EM_ANALISE
+  CANCELADO
+  REENCAMINHADO
+}
