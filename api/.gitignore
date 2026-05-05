@@ -15,7 +15,8 @@ pnpm-lock.yaml
 .env.test
 .env.production
 *.env
-
+.env.*
+!.env.example
 # Build and output directories
 /build
 /dist
