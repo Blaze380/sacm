@@ -16,7 +16,7 @@ notificationRouter.get(
       // uploads: {}
     }
   },
-  notificationController.someHandler
+  // notificationController.someHandler
 )
 
 export default notificationRouter

@@ -16,7 +16,7 @@ appointmentRouter.get(
       // uploads: {}
     }
   },
-  appointmentController.someHandler
+  // appointmentController.someHandler
 )
 
 export default appointmentRouter

@@ -16,7 +16,7 @@ triageRouter.get(
       // uploads: {}
     }
   },
-  triageController.someHandler
+  // triageController.someHandler
 )
 
 export default triageRouter

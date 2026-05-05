@@ -16,7 +16,7 @@ consultationTypeRouter.get(
       // uploads: {}
     }
   },
-  consultationTypeController.someHandler
+  // consultationTypeController.someHandler
 )
 
 export default consultationTypeRouter

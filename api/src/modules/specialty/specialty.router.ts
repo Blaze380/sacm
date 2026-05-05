@@ -16,7 +16,7 @@ specialtyRouter.get(
       // uploads: {}
     }
   },
-  specialtyController.someHandler
+ // specialtyController.someHandler
 )
 
 export default specialtyRouter
