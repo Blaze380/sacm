@@ -15,7 +15,7 @@
     "lib": ["es6", "dom"],
     "noImplicitAny": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx",  "src/**/*.jsx", "arkos.config.ts"],
