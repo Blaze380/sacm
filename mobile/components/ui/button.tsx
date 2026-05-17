@@ -1,11 +1,14 @@
 import { TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
+import { useEffect, useRef } from "react";
+import { Animated, Easing } from "react-native";
 import { cva, type VariantProps } from 'class-variance-authority';
+import { Circle, Loader2 } from 'lucide-react-native';
 import { Platform, Pressable } from 'react-native';
 
 const buttonVariants = cva(
   cn(
-    'group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none',
+    'group shrink-0 flex-row items-center justify-center gap-2 rounded-full shadow-none',
     Platform.select({
       web: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     })
@@ -30,7 +33,7 @@ const buttonVariants = cva(
           })
         ),
         secondary: cn(
-          'bg-secondary active:bg-secondary/80 shadow-sm shadow-black/5',
+          'bg-muted active:bg-gray-700 ashadow-sm ashadow-black/5',
           Platform.select({ web: 'hover:bg-secondary/80' })
         ),
         ghost: cn(
@@ -87,20 +90,59 @@ const buttonTextVariants = cva(
     },
   }
 );
+type Props={
+  isLoading?: boolean;
+  loaderColor?: "white" | "black" | "green";
 
-type ButtonProps = React.ComponentProps<typeof Pressable> & React.RefAttributes<typeof Pressable> & VariantProps<typeof buttonVariants>;
+}
+type ButtonProps =
+  React.ComponentProps<typeof Pressable>
+  & React.RefAttributes<typeof Pressable>
+  & VariantProps<typeof buttonVariants>
+  & Props;
 
-function Button({ className, variant, size, ...props }: ButtonProps) {
+function Button ({ className, variant, size, isLoading, disabled, children, loaderColor, ...props }: ButtonProps) {
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
       <Pressable
-        className={cn(props.disabled && 'opacity-50', buttonVariants({ variant, size }), className)}
+        className={cn((disabled || isLoading) && 'opacity-60', buttonVariants({ variant, size }), className)}
         role="button"
+        disabled={disabled || isLoading}
         {...props}
-      />
+      >
+        <>
+          {isLoading && <Spinner loaderColor={loaderColor || "white"} />}{children}
+        </>
+      </Pressable>
     </TextClassContext.Provider>
   );
 }
-
 export { Button, buttonTextVariants, buttonVariants };
 export type { ButtonProps };
+
+
+export function Spinner({loaderColor}:Props) {
+  const rotate = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(rotate, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, [rotate]);
+
+  const spin = rotate.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
+
+  return (
+    <Animated.View style={{ transform: [{ rotate: spin }] }}>
+      <Loader2 size={20} color={loaderColor || "white"} />
+    </Animated.View>
+  );
+}

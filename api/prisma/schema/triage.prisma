@@ -1,9 +1,8 @@
-
 model Triage {
   id                  String       @id @default(uuid())
   complaint           String
   symptomDuration     String
-  symptomTaken        String
+  symptom             String
   actionTaken         String
   reactionAfterAction String
   status              TriageStatus @default(PENDENTE)
