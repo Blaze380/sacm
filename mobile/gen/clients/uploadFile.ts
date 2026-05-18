@@ -19,7 +19,10 @@ import type {
 import { buildFormData } from "../.kubb/config.ts";
 
 function getUploadFileUrl(fileType: UploadFilePathParams["fileType"]) {
-  const res = { method: "POST", url: `/api/uploads/${fileType}` as const };
+  const res = {
+    method: "POST",
+    url: `http://kami-no-notebook:8000/api/uploads/${fileType}` as const,
+  };
   return res;
 }
 

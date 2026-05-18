@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteSpecialtyUrl(id: DeleteSpecialtyPathParams["id"]) {
-  const res = { method: "DELETE", url: `/api/specialties/${id}` as const };
+  const res = {
+    method: "DELETE",
+    url: `http://kami-no-notebook:8000/api/specialties/${id}` as const,
+  };
   return res;
 }
 

@@ -20,7 +20,10 @@ import type {
 function getFindConsultationTypeByIdUrl(
   id: FindConsultationTypeByIdPathParams["id"],
 ) {
-  const res = { method: "GET", url: `/api/consultation-types/${id}` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/consultation-types/${id}` as const,
+  };
   return res;
 }
 

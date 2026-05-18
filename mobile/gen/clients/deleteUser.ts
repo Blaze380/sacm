@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteUserUrl(id: DeleteUserPathParams["id"]) {
-  const res = { method: "DELETE", url: `/api/users/${id}` as const };
+  const res = {
+    method: "DELETE",
+    url: `http://kami-no-notebook:8000/api/users/${id}` as const,
+  };
   return res;
 }
 

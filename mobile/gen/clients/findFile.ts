@@ -16,7 +16,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindFileUrl(path: FindFilePathParams["path"]) {
-  const res = { method: "GET", url: `/api/uploads/${path}` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/uploads/${path}` as const,
+  };
   return res;
 }
 

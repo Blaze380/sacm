@@ -17,7 +17,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getLoginUrl() {
-  const res = { method: "POST", url: `/api/auth/login` as const };
+  const res = {
+    method: "POST",
+    url: `http://kami-no-notebook:8000/api/auth/login` as const,
+  };
   return res;
 }
 

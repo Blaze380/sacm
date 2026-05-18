@@ -22,7 +22,7 @@ function getFindOneAuthActionUrl(
 ) {
   const res = {
     method: "GET",
-    url: `/api/auth-actions/${resourceName}` as const,
+    url: `http://kami-no-notebook:8000/api/auth-actions/${resourceName}` as const,
   };
   return res;
 }

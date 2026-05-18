@@ -15,7 +15,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteMeUrl() {
-  const res = { method: "DELETE", url: `/api/users/me` as const };
+  const res = {
+    method: "DELETE",
+    url: `http://kami-no-notebook:8000/api/users/me` as const,
+  };
   return res;
 }
 

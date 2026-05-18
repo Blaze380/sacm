@@ -12,7 +12,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getLogoutUrl() {
-  const res = { method: "DELETE", url: `/api/auth/logout` as const };
+  const res = {
+    method: "DELETE",
+    url: `http://kami-no-notebook:8000/api/auth/logout` as const,
+  };
   return res;
 }
 

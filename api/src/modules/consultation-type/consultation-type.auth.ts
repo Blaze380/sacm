@@ -1,24 +1,25 @@
+import { UserRole } from '@prisma/client';
 import { AuthConfigs } from 'arkos/auth';
 import { authService } from "arkos/services";
 
 export const consultationTypeAccessControl = {
   Create: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Create Consultation Type",
     description: "Permission to create new consultation type records",
   },
   Update: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Update Consultation Type",
     description: "Permission to update existing consultation type records",
   },
   Delete: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Delete Consultation Type",
     description: "Permission to delete consultation type records",
   },
   View: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR, UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "View Consultation Type",
     description: "Permission to view consultation type records",
   },

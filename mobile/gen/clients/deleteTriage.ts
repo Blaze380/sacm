@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteTriageUrl(id: DeleteTriagePathParams["id"]) {
-  const res = { method: "DELETE", url: `/api/triages/${id}` as const };
+  const res = {
+    method: "DELETE",
+    url: `http://kami-no-notebook:8000/api/triages/${id}` as const,
+  };
   return res;
 }
 

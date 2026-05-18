@@ -12,7 +12,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getGetAvailableResourcesUrl() {
-  const res = { method: "GET", url: `/api/available-resources` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/available-resources` as const,
+  };
   return res;
 }
 

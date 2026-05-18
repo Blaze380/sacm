@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindTriageByIdUrl(id: FindTriageByIdPathParams["id"]) {
-  const res = { method: "GET", url: `/api/triages/${id}` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/triages/${id}` as const,
+  };
   return res;
 }
 

@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getCreateUserUrl() {
-  const res = { method: "POST", url: `/api/users` as const };
+  const res = {
+    method: "POST",
+    url: `http://kami-no-notebook:8000/api/users` as const,
+  };
   return res;
 }
 

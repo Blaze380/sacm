@@ -20,7 +20,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateTriageUrl(id: UpdateTriagePathParams["id"]) {
-  const res = { method: "PATCH", url: `/api/triages/${id}` as const };
+  const res = {
+    method: "PATCH",
+    url: `http://kami-no-notebook:8000/api/triages/${id}` as const,
+  };
   return res;
 }
 

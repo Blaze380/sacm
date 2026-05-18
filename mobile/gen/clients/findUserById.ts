@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindUserByIdUrl(id: FindUserByIdPathParams["id"]) {
-  const res = { method: "GET", url: `/api/users/${id}` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/users/${id}` as const,
+  };
   return res;
 }
 

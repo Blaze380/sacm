@@ -21,7 +21,7 @@ function getDeleteFileUrl(
 ) {
   const res = {
     method: "DELETE",
-    url: `/api/uploads/${fileType}/${fileName}` as const,
+    url: `http://kami-no-notebook:8000/api/uploads/${fileType}/${fileName}` as const,
   };
   return res;
 }

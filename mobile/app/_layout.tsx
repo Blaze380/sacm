@@ -25,9 +25,9 @@ export default function RootLayout() {
       <BottomSheetModalProvider>
 
       <Stack screenOptions={{headerShown:false}} >
-        <Stack.Screen name="(auth)/onboarding/step1"  />
-        <Stack.Screen name="index"  />
         <Stack.Screen name="(tabs)"  />
+        <Stack.Screen name="(auth)/onboarding" options={{ headerShown: false }} />
+        <Stack.Screen name="index"  />
         <Stack.Screen name="(auth)/login/index"  />
         <Stack.Screen name="(auth)/signup/step1"  />
         <Stack.Screen name="(auth)/signup/step2" options={{

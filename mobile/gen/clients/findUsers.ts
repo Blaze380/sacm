@@ -17,7 +17,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindUsersUrl() {
-  const res = { method: "GET", url: `/api/users` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/users` as const,
+  };
   return res;
 }
 

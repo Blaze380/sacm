@@ -1,24 +1,25 @@
+import { UserRole } from '@prisma/client';
 import { AuthConfigs } from 'arkos/auth';
 import { authService } from "arkos/services";
 
 export const triageAccessControl = {
   Create: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR],
     name: "Create Triage",
     description: "Permission to create new triage records",
   },
   Update: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
     name: "Update Triage",
     description: "Permission to update existing triage records",
   },
   Delete: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
     name: "Delete Triage",
     description: "Permission to delete triage records",
   },
   View: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR, UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "View Triage",
     description: "Permission to view triage records",
   },

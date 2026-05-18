@@ -1,24 +1,25 @@
+import { UserRole } from '@prisma/client';
 import { AuthConfigs } from 'arkos/auth';
 import { authService } from "arkos/services";
 
 export const specialtyAccessControl = {
   Create: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Create Specialty",
     description: "Permission to create new specialty records",
   },
   Update: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Update Specialty",
     description: "Permission to update existing specialty records",
   },
   Delete: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Delete Specialty",
     description: "Permission to delete specialty records",
   },
   View: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR, UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "View Specialty",
     description: "Permission to view specialty records",
   },

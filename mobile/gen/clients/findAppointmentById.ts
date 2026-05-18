@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindAppointmentByIdUrl(id: FindAppointmentByIdPathParams["id"]) {
-  const res = { method: "GET", url: `/api/appointments/${id}` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/appointments/${id}` as const,
+  };
   return res;
 }
 

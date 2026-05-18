@@ -17,7 +17,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindSpecialtiesUrl() {
-  const res = { method: "GET", url: `/api/specialties` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/specialties` as const,
+  };
   return res;
 }
 

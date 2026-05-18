@@ -22,7 +22,7 @@ function getDeleteConsultationTypeUrl(
 ) {
   const res = {
     method: "DELETE",
-    url: `/api/consultation-types/${id}` as const,
+    url: `http://kami-no-notebook:8000/api/consultation-types/${id}` as const,
   };
   return res;
 }

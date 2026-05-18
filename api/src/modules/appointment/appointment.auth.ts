@@ -1,24 +1,25 @@
+import { UserRole } from '@prisma/client';
 import { AuthConfigs } from 'arkos/auth';
 import { authService } from "arkos/services";
 
 export const appointmentAccessControl = {
   Create: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR],
     name: "Create Appointment",
     description: "Permission to create new appointment records",
   },
   Update: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
     name: "Update Appointment",
     description: "Permission to update existing appointment records",
   },
   Delete: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR],
     name: "Delete Appointment",
     description: "Permission to delete appointment records",
   },
   View: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR, UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "View Appointment",
     description: "Permission to view appointment records",
   },

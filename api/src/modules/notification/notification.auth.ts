@@ -1,24 +1,25 @@
+import { UserRole } from '@prisma/client';
 import { AuthConfigs } from 'arkos/auth';
 import { authService } from "arkos/services";
 
 export const notificationAccessControl = {
   Create: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
     name: "Create Notification",
     description: "Permission to create new notification records",
   },
   Update: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
     name: "Update Notification",
     description: "Permission to update existing notification records",
   },
   Delete: {
-    roles: [],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
     name: "Delete Notification",
     description: "Permission to delete notification records",
   },
   View: {
-    roles: [],
+    roles: [UserRole.UTILIZADOR, UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "View Notification",
     description: "Permission to view notification records",
   },

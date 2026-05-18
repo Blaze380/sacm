@@ -17,7 +17,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindConsultationTypesUrl() {
-  const res = { method: "GET", url: `/api/consultation-types` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/consultation-types` as const,
+  };
   return res;
 }
 

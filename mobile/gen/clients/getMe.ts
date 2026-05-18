@@ -12,7 +12,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getGetMeUrl() {
-  const res = { method: "GET", url: `/api/users/me` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/users/me` as const,
+  };
   return res;
 }
 

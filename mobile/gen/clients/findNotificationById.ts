@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getFindNotificationByIdUrl(id: FindNotificationByIdPathParams["id"]) {
-  const res = { method: "GET", url: `/api/notifications/${id}` as const };
+  const res = {
+    method: "GET",
+    url: `http://kami-no-notebook:8000/api/notifications/${id}` as const,
+  };
   return res;
 }
 

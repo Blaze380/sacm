@@ -18,7 +18,10 @@ import type {
 } from "@kubb/plugin-client/clients/axios";
 
 function getCreateSpecialtyUrl() {
-  const res = { method: "POST", url: `/api/specialties` as const };
+  const res = {
+    method: "POST",
+    url: `http://kami-no-notebook:8000/api/specialties` as const,
+  };
   return res;
 }
 

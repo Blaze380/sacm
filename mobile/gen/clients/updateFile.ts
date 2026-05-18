@@ -25,7 +25,7 @@ function getUpdateFileUrl(
 ) {
   const res = {
     method: "PATCH",
-    url: `/api/uploads/${fileType}/${fileName}` as const,
+    url: `http://kami-no-notebook:8000/api/uploads/${fileType}/${fileName}` as const,
   };
   return res;
 }

@@ -20,6 +20,7 @@ export default defineConfig({
     }),
     pluginClient({
       output: { path: 'clients' },
+      baseURL: process.env.EXPO_PUBLIC_API_URL ?? 'http://kami-no-notebook:8000',
     }),
     pluginZod({
       output: { path: 'zod' },
