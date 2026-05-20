@@ -6,13 +6,11 @@ import type { BookConsultationFormValues } from "@/lib/validation/book-consultat
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale";
-import { Control, useController } from "react-hook-form";
+import { useController, useFormContext } from "react-hook-form";
 import { Platform, Pressable, View } from "react-native";
 import { useState } from "react";
 
 type Props = {
-  control: Control<BookConsultationFormValues>;
-  errors: Partial<Record<keyof BookConsultationFormValues, { message?: string }>>;
   consultationTypes: ConsultationTypeItem[];
   isLoadingOptions: boolean;
 };
@@ -26,17 +24,51 @@ function withDefaultTime(date: Date): Date {
 }
 
 export function StepSchedule({
-  control,
-  errors,
   consultationTypes,
   isLoadingOptions,
 }: Props) {
   const [showPicker, setShowPicker] = useState(false);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<BookConsultationFormValues>();
   const { field: dateField } = useController({ control, name: "date" });
+  const { field: typeField } = useController({
+    control,
+    name: "consultationTypeId",
+  });
 
   const options = consultationTypes.map((t) => ({ value: t.id, label: t.name }));
   const appointmentDate = dateField.value;
   const minDate = new Date();
+
+  // #region agent log
+  fetch("http://127.0.0.1:7651/ingest/99e5587c-42fc-439b-9250-4258fd9c3c1b", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Debug-Session-Id": "98573e",
+    },
+    body: JSON.stringify({
+      sessionId: "98573e",
+      location: "step-schedule.tsx:render",
+      message: "StepSchedule render",
+      data: {
+        optionsCount: options.length,
+        isLoadingOptions,
+        consultationTypeId: typeField.value,
+        dateFieldValueType:
+          appointmentDate === undefined
+            ? "undefined"
+            : appointmentDate instanceof Date
+              ? "Date"
+              : typeof appointmentDate,
+      },
+      timestamp: Date.now(),
+      hypothesisId: "H4-H6",
+    }),
+  }).catch(() => {});
+  // #endregion
 
   return (
     <View className="gap-4">
@@ -85,7 +117,28 @@ export function StepSchedule({
               setShowPicker(false);
             }
             if (selected) {
-              dateField.onChange(withDefaultTime(selected));
+              const next = withDefaultTime(selected);
+              dateField.onChange(next);
+              // #region agent log
+              fetch(
+                "http://127.0.0.1:7651/ingest/99e5587c-42fc-439b-9250-4258fd9c3c1b",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-Debug-Session-Id": "98573e",
+                  },
+                  body: JSON.stringify({
+                    sessionId: "98573e",
+                    location: "step-schedule.tsx:date-change",
+                    message: "date picker changed",
+                    data: { iso: next.toISOString() },
+                    timestamp: Date.now(),
+                    hypothesisId: "H4",
+                  }),
+                },
+              ).catch(() => {});
+              // #endregion
             }
           }}
         />

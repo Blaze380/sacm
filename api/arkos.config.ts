@@ -6,7 +6,7 @@ const config: ArkosConfig = {
     login: {
       allowedUsernames: ['email'],
     },
-    enabled:false,
+    // enabled:false,
   },
   routers: {
     strict: "no-bulk"

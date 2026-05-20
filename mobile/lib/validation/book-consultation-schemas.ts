@@ -45,14 +45,16 @@ export const bookConsultationFormSchema = z
     notes: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    const schedule = bookConsultationScheduleSchema.safeParse({
-      consultationTypeId: data.consultationTypeId,
-      date: data.date,
-      notes: data.notes,
-    });
-    if (!schedule.success) {
-      for (const issue of schedule.error.issues) {
-        ctx.addIssue(issue);
+    if (data.mode === "DIRECT") {
+      const schedule = bookConsultationScheduleSchema.safeParse({
+        consultationTypeId: data.consultationTypeId,
+        date: data.date,
+        notes: data.notes,
+      });
+      if (!schedule.success) {
+        for (const issue of schedule.error.issues) {
+          ctx.addIssue(issue);
+        }
       }
     }
 
@@ -77,7 +79,7 @@ export type BookConsultationFormData = z.infer<typeof bookConsultationFormSchema
 export type BookConsultationMode = BookConsultationFormData["mode"];
 
 export type BookConsultationFormValues = {
-  mode?: BookConsultationMode;
+  mode: BookConsultationMode;
   complaint: string;
   symptom: string;
   symptomDuration: string;
@@ -99,27 +101,20 @@ export const bookConsultationDefaultValues: BookConsultationFormValues = {
 };
 
 export type WizardStepId =
-  | "mode"
   | "complaint"
   | "symptom"
   | "action"
   | "consultation";
 
-export function getStepsForMode(
-  mode: BookConsultationMode | undefined,
-): WizardStepId[] {
-  if (!mode) {
-    return ["mode"];
-  }
+export function getStepsForMode(mode: BookConsultationMode): WizardStepId[] {
   if (mode === "DIRECT") {
-    return ["mode", "consultation"];
+    return ["consultation"];
   }
-  return ["mode", "complaint", "symptom", "action", "consultation"];
+  return ["complaint", "symptom", "action"];
 }
 
 export const STEP_FIELDS: Record<WizardStepId, (keyof BookConsultationFormData)[]> =
   {
-    mode: ["mode"],
     complaint: ["complaint"],
     symptom: ["symptom", "symptomDuration"],
     action: ["actionTaken", "reactionAfterAction"],
@@ -127,7 +122,6 @@ export const STEP_FIELDS: Record<WizardStepId, (keyof BookConsultationFormData)[
   };
 
 export const STEP_SCHEMAS: Record<WizardStepId, z.ZodType> = {
-  mode: bookConsultationModeSchema,
   complaint: bookConsultationComplaintSchema,
   symptom: bookConsultationSymptomSchema,
   action: bookConsultationActionSchema,
@@ -138,10 +132,6 @@ export const STEP_META: Record<
   WizardStepId,
   { title: string; subtitle: string }
 > = {
-  mode: {
-    title: "Tipo de pedido",
-    subtitle: "Como pretende marcar a sua consulta?",
-  },
   complaint: {
     title: "Qual é a sua reclamação?",
     subtitle: "Descreva o motivo principal da sua visita.",

@@ -1,13 +1,13 @@
 import { ConsultationsFilters } from "@/components/consultations/consultations-filters";
 import { ConsultationsHero } from "@/components/consultations/consultations-hero";
 import { ConsultationsList } from "@/components/consultations/consultations-list";
+import { useBookingModeSheet } from "@/hooks/use-booking-mode-sheet";
 import { useConsultationsData } from "@/hooks/use-consultations-data";
-import { useRouter } from "expo-router";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ConsultationsTab() {
-  const router = useRouter();
+  const { present, BookingModeSheet } = useBookingModeSheet();
   const {
     filteredItems,
     search,
@@ -30,7 +30,7 @@ export default function ConsultationsTab() {
         <ConsultationsHero
           search={search}
           onSearchChange={setSearch}
-          onAdd={() => router.push("/(tabs)/consultations/new")}
+          onAdd={present}
         />
         <ConsultationsFilters
           statusFilter={statusFilter}
@@ -43,6 +43,7 @@ export default function ConsultationsTab() {
           onRetry={refetch}
         />
       </ScrollView>
+      <BookingModeSheet />
     </SafeAreaView>
   );
 }

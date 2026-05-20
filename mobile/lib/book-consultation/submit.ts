@@ -21,19 +21,13 @@ export async function submitBookConsultation(
   };
 
   if (data.mode === "TRIAGE") {
-    const triage = await createPatientTriage({
+    await createPatientTriage({
       complaint: data.complaint.trim(),
       symptomDuration: data.symptomDuration.trim(),
       symptomTaken: data.symptom.trim(),
       actionTaken: data.actionTaken.trim(),
       reactionAfterAction: data.reactionAfterAction.trim(),
       patient: { id: patientId },
-    });
-
-    await createPatientAppointment({
-      ...appointmentBase,
-      source: "TRIAGEM",
-      triage: { id: triage.id },
     });
     return;
   }

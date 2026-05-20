@@ -10,31 +10,35 @@ import {
   STEP_FIELDS,
   STEP_SCHEMAS,
   type BookConsultationFormValues,
+  type BookConsultationMode,
   type WizardStepId,
 } from "@/lib/validation/book-consultation-schemas";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export function useBookConsultationWizard() {
+export function useBookConsultationWizard(mode: BookConsultationMode) {
   const [stepIndex, setStepIndex] = useState(0);
   const [consultationTypes, setConsultationTypes] = useState<
     ConsultationTypeItem[]
   >([]);
-  const [isLoadingOptions, setIsLoadingOptions] = useState(true);
+  const [isLoadingOptions, setIsLoadingOptions] = useState(mode === "DIRECT");
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useForm<BookConsultationFormValues>({
-    defaultValues: bookConsultationDefaultValues,
+    defaultValues: { ...bookConsultationDefaultValues, mode },
     mode: "onChange",
   });
 
-  const mode = form.watch("mode");
   const steps = useMemo(() => getStepsForMode(mode), [mode]);
-  const currentStep = steps[stepIndex] ?? "mode";
+  const currentStep = steps[stepIndex] ?? steps[0];
   const isLastStep = stepIndex === steps.length - 1;
   const isFirstStep = stepIndex === 0;
 
   useEffect(() => {
+    if (mode !== "DIRECT") {
+      return;
+    }
+
     let cancelled = false;
     (async () => {
       setIsLoadingOptions(true);
@@ -56,7 +60,7 @@ export function useBookConsultationWizard() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
     setStepIndex((current) => {
@@ -145,24 +149,15 @@ export function useBookConsultationWizard() {
     }
   }, [form, validateCurrentStep]);
 
-  const resetAfterModeChange = useCallback(
-    (previousMode?: BookConsultationFormValues["mode"]) => {
-      const nextMode = form.getValues("mode");
-      if (previousMode !== nextMode) {
-        setStepIndex(0);
-      }
-    },
-    [form],
-  );
-
   const resetWizard = useCallback(() => {
-    form.reset(bookConsultationDefaultValues);
+    form.reset({ ...bookConsultationDefaultValues, mode });
     setStepIndex(0);
     setSubmitError(null);
-  }, [form]);
+  }, [form, mode]);
 
   return {
     form,
+    mode,
     steps,
     currentStep,
     stepIndex,
@@ -175,7 +170,6 @@ export function useBookConsultationWizard() {
     goNext,
     goBack,
     submit,
-    resetAfterModeChange,
     resetWizard,
   };
 }

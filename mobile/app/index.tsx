@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { isInvalidSessionError } from "@/lib/auth/session-error";
 import { getCurrentUser } from "@/lib/auth/user";
 import { getAccessToken } from "@/lib/auth/session";
 import {
@@ -34,8 +35,13 @@ export default function LandingScreen() {
         } else {
           router.replace(getOnboardingRoute(user));
         }
-      } catch {
-        if (!cancelled) setCheckingSession(false);
+      } catch (error) {
+        if (!cancelled) {
+          // Interceptor trata sessão inválida; evita spinner infinito se o redirect falhar
+          if (!isInvalidSessionError(error)) {
+            setCheckingSession(false);
+          }
+        }
       }
     })();
 

@@ -3,7 +3,9 @@ import { DarkTheme, DefaultTheme, ThemeProvider, useTheme, } from '@react-naviga
 import { Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { useEffect } from "react";
 
+import { setAuthRouter } from "@/lib/auth/auth-navigation";
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import {PortalHost} from "@rn-primitives/portal"
 import { Pressable } from "react-native";
@@ -17,7 +19,12 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
-    const { colors } = useTheme();
+  const { colors } = useTheme();
+
+  useEffect(() => {
+    setAuthRouter(router);
+  }, [router]);
+
   return (
     <ThemeProvider value={DefaultTheme}>
     {/* <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}

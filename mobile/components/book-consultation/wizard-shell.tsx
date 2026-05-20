@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { X } from "lucide-react-native";
 import { ReactNode } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
@@ -54,7 +54,14 @@ export function WizardShell({
           <Text className="text-2xl font-semibold">{title}</Text>
           <Text className="text-muted-foreground mt-2">{subtitle}</Text>
         </View>
-        <View className="flex-1">{children}</View>
+        <ScrollView
+          className="flex-1"
+          keyboardShouldPersistTaps="handled"
+          contentContainerClassName="pb-4"
+          showsVerticalScrollIndicator={false}
+        >
+          {children}
+        </ScrollView>
         {submitError ? (
           <Text className="text-red-500">{submitError}</Text>
         ) : null}
