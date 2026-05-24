@@ -20,7 +20,7 @@ export default defineConfig({
     }),
     pluginClient({
       output: { path: 'clients' },
-      baseURL: 'http://localhost:8000',
+      baseURL: process.env.NEXT_PUBLIC_API_URL,
     }),
     pluginZod({
       output: { path: 'zod' },
