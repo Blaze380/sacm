@@ -8,7 +8,7 @@ import type { DeleteFileMutationResponse, DeleteFilePathParams, DeleteFile404 } 
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteFileUrl(fileType: DeleteFilePathParams["fileType"], fileName: DeleteFilePathParams["fileName"]) {
-  const res = { method: 'DELETE', url: `http://localhost:8000/api/uploads/${fileType}/${fileName}` as const }
+  const res = { method: 'DELETE', url: `/api/uploads/${fileType}/${fileName}` as const }
   return res
 }
 

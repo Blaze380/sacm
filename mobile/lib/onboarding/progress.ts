@@ -4,7 +4,7 @@ export type OnboardingRoute =
   | "/(auth)/onboarding/step1"
   | "/(auth)/onboarding/step2"
   | "/(auth)/onboarding/step3"
-  | "/(tabs)";
+  | "/(tabs)/home";
 
 function isFilled(value?: string | null): boolean {
   return typeof value === "string" && value.trim().length > 0;
@@ -38,7 +38,7 @@ export function getOnboardingRoute(user: GetMe200): OnboardingRoute {
   if (!isStep2Complete(user)) {
     return "/(auth)/onboarding/step2";
   }
-  return "/(tabs)";
+  return "/(tabs)/home";
 }
 
 /** Route for in-flow navigation after step2 submit (success screen). */

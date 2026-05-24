@@ -31,7 +31,7 @@ export default function LandingScreen() {
         if (cancelled) return;
 
         if (isOnboardingComplete(user)) {
-          router.replace("/(tabs)");
+          router.replace("/(tabs)/home");
         } else {
           router.replace(getOnboardingRoute(user));
         }

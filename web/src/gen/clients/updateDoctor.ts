@@ -8,7 +8,7 @@ import type { UpdateDoctorMutationRequest, UpdateDoctorMutationResponse, UpdateD
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateDoctorUrl(id: UpdateDoctorPathParams["id"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/doctors/${id}` as const }
+  const res = { method: 'PATCH', url: `/api/doctors/${id}` as const }
   return res
 }
 

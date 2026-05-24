@@ -18,6 +18,13 @@ export default function ConsultationsLayout() {
           animation: "slide_from_right",
         }}
       />
+      <Stack.Screen
+        name="new/book-referral"
+        options={{
+          presentation: "card",
+          animation: "slide_from_right",
+        }}
+      />
     </Stack>
   );
 }

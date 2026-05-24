@@ -8,7 +8,7 @@ import type { FindOneAuthActionQueryResponse, FindOneAuthActionPathParams, FindO
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindOneAuthActionUrl(resourceName: FindOneAuthActionPathParams["resourceName"]) {
-  const res = { method: 'GET', url: `http://localhost:8000/api/auth-actions/${resourceName}` as const }
+  const res = { method: 'GET', url: `/api/auth-actions/${resourceName}` as const }
   return res
 }
 

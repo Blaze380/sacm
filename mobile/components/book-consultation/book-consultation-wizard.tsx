@@ -4,7 +4,10 @@ import { StepTriageAction } from "@/components/book-consultation/step-triage-act
 import { StepTriageComplaint } from "@/components/book-consultation/step-triage-complaint";
 import { StepTriageSymptom } from "@/components/book-consultation/step-triage-symptom";
 import { WizardShell } from "@/components/book-consultation/wizard-shell";
-import { useBookConsultationWizard } from "@/hooks/use-book-consultation-wizard";
+import {
+  useBookConsultationWizard,
+  type ReferralWizardContext,
+} from "@/hooks/use-book-consultation-wizard";
 import {
   STEP_META,
   type BookConsultationMode,
@@ -17,9 +20,10 @@ import { FormProvider } from "react-hook-form";
 
 type Props = {
   mode: BookConsultationMode;
+  referral?: ReferralWizardContext;
 };
 
-export function BookConsultationWizard({ mode }: Props) {
+export function BookConsultationWizard({ mode, referral }: Props) {
   const router = useRouter();
   const discardRef = useRef<DiscardSheetRef>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,16 +42,17 @@ export function BookConsultationWizard({ mode }: Props) {
     goBack,
     submit,
     resetWizard,
-  } = useBookConsultationWizard(mode);
+  } = useBookConsultationWizard(mode, referral);
 
-  const { control, formState } = form;
-  const errors = formState.errors;
+  const { isDirty } = form.formState;
   const meta = STEP_META[currentStep];
   const primaryLabel =
     isLastStep && mode === "TRIAGE"
       ? "Confirmar triagem"
       : isLastStep
-        ? "Confirmar pedido"
+        ? mode === "REFERRAL"
+          ? "Confirmar agendamento"
+          : "Confirmar pedido"
         : "Próximo";
 
   const exitForm = useCallback(() => {
@@ -56,13 +61,13 @@ export function BookConsultationWizard({ mode }: Props) {
   }, [resetWizard, router]);
 
   const tryExit = useCallback(() => {
-    if (formState.isDirty) {
+    if (isDirty) {
       discardRef.current?.present();
       return true;
     }
     exitForm();
     return true;
-  }, [exitForm, formState.isDirty]);
+  }, [exitForm, isDirty]);
 
   useFocusEffect(
     useCallback(() => {
@@ -102,23 +107,26 @@ export function BookConsultationWizard({ mode }: Props) {
   }, [goNext, isLastStep, resetWizard, router, submit]);
 
   const renderStep = () => {
-    switch (currentStep) {
-      case "complaint":
-        return <StepTriageComplaint control={control} errors={errors} />;
-      case "symptom":
-        return <StepTriageSymptom control={control} errors={errors} />;
-      case "action":
-        return <StepTriageAction control={control} errors={errors} />;
-      case "consultation":
-        return (
-          <StepSchedule
-            consultationTypes={consultationTypes}
-            isLoadingOptions={isLoadingOptions}
-          />
-        );
-      default:
-        return null;
+    if (mode === "TRIAGE") {
+      switch (currentStep) {
+        case "complaint":
+          return <StepTriageComplaint />;
+        case "symptom":
+          return <StepTriageSymptom />;
+        case "action":
+          return <StepTriageAction />;
+        default:
+          return null;
+      }
     }
+
+    return (
+      <StepSchedule
+        consultationTypes={consultationTypes}
+        isLoadingOptions={isLoadingOptions}
+        lockConsultationType={mode === "REFERRAL"}
+      />
+    );
   };
 
   return (

@@ -8,7 +8,7 @@ import type { DeleteConsultationTypeMutationResponse, DeleteConsultationTypePath
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteConsultationTypeUrl(id: DeleteConsultationTypePathParams["id"]) {
-  const res = { method: 'DELETE', url: `http://localhost:8000/api/consultation-types/${id}` as const }
+  const res = { method: 'DELETE', url: `/api/consultation-types/${id}` as const }
   return res
 }
 

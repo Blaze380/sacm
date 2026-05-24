@@ -8,7 +8,7 @@ import type { FindConsultationTypeByIdQueryResponse, FindConsultationTypeByIdPat
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindConsultationTypeByIdUrl(id: FindConsultationTypeByIdPathParams["id"]) {
-  const res = { method: 'GET', url: `http://localhost:8000/api/consultation-types/${id}` as const }
+  const res = { method: 'GET', url: `/api/consultation-types/${id}` as const }
   return res
 }
 

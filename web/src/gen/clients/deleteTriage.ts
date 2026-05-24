@@ -8,7 +8,7 @@ import type { DeleteTriageMutationResponse, DeleteTriagePathParams, DeleteTriage
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteTriageUrl(id: DeleteTriagePathParams["id"]) {
-  const res = { method: 'DELETE', url: `http://localhost:8000/api/triages/${id}` as const }
+  const res = { method: 'DELETE', url: `/api/triages/${id}` as const }
   return res
 }
 

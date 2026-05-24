@@ -15,11 +15,14 @@ export async function fetchPatientAppointments(
   const res = await apiClient.get<
     FindAppointments200 | { data: FindAppointments200 }
   >("/api/appointments", {
-    params: { limit: 100, sort: "-date" },
+    params: {
+      limit: 100,
+      sort: "-date",
+      patient: { id: patientId },
+    },
   });
 
-  const items = unwrapPaginated(res.data);
-  return items.filter((item) => item.patientId === patientId);
+  return unwrapPaginated(res.data);
 }
 
 export async function fetchUpcomingAppointments(

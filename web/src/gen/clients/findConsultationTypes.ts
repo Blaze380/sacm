@@ -8,7 +8,7 @@ import type { FindConsultationTypesQueryResponse, FindConsultationTypesQueryPara
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindConsultationTypesUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/consultation-types` as const }
+  const res = { method: 'GET', url: `/api/consultation-types` as const }
   return res
 }
 

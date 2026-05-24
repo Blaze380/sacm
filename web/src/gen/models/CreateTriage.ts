@@ -103,7 +103,7 @@ export type CreateTriageMutationRequest = {
      * @minLength 1
      * @type string
     */
-    symptomTaken: string;
+    symptom: string;
     /**
      * @minLength 1
      * @type string

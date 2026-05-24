@@ -150,14 +150,14 @@ export type FindTriagesQueryParams = {
     };
 };
 
-export const dataStatusEnum2 = {
+export const dataStatusEnum3 = {
     PENDENTE: "PENDENTE",
     EM_ANALISE: "EM_ANALISE",
     CANCELADO: "CANCELADO",
     REENCAMINHADO: "REENCAMINHADO"
 } as const;
 
-export type DataStatusEnum2Key = (typeof dataStatusEnum2)[keyof typeof dataStatusEnum2];
+export type DataStatusEnum3Key = (typeof dataStatusEnum3)[keyof typeof dataStatusEnum3];
 
 /**
  * @description List of triages retrieved successfully
@@ -205,7 +205,7 @@ export type FindTriages200 = {
          * @default "PENDENTE"
          * @type string
         */
-        status: DataStatusEnum2Key;
+        status: DataStatusEnum3Key;
         /**
          * @type string
         */

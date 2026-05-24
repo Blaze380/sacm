@@ -8,7 +8,7 @@ import type { CreateAppointmentMutationRequest, CreateAppointmentMutationRespons
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getCreateAppointmentUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/appointments` as const }
+  const res = { method: 'POST', url: `/api/appointments` as const }
   return res
 }
 

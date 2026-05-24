@@ -9,12 +9,12 @@ export const triageAccessControl = {
     description: "Permission to create new triage records",
   },
   Update: {
-    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "Update Triage",
     description: "Permission to update existing triage records",
   },
   Delete: {
-    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA, UserRole.UTILIZADOR],
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "Delete Triage",
     description: "Permission to delete triage records",
   },
@@ -22,6 +22,21 @@ export const triageAccessControl = {
     roles: [UserRole.UTILIZADOR, UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
     name: "View Triage",
     description: "Permission to view triage records",
+  },
+  Approve: {
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
+    name: "Approve Triage",
+    description: "Permission to approve and refer triage records",
+  },
+  Reject: {
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA],
+    name: "Reject Triage",
+    description: "Permission to reject triage records",
+  },
+  StartReview: {
+    roles: [UserRole.ADMINISTRADOR, UserRole.RECEPCIONISTA,UserRole.UTILIZADOR],
+    name: "Start Triage Review",
+    description: "Permission to mark a triage as under review",
   },
 } as const satisfies AuthConfigs["accessControl"];
 
@@ -33,6 +48,9 @@ export const triagePermissions = {
   canUpdate: createTriagePermission("Update"),
   canDelete: createTriagePermission("Delete"),
   canView: createTriagePermission("View"),
+  canApprove: createTriagePermission("Approve"),
+  canReject: createTriagePermission("Reject"),
+  canStartReview: createTriagePermission("StartReview"),
 };
 
 export const triageAuthenticationControl = {
@@ -40,6 +58,9 @@ export const triageAuthenticationControl = {
   Update: true,
   Delete: true,
   View: true,
+  Approve: true,
+  Reject: true,
+  StartReview: true,
 };
 
 const triageAuthConfigs: AuthConfigs = {

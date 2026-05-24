@@ -6,7 +6,7 @@ import type { BookConsultationMode } from "@/lib/validation/book-consultation-sc
 import { useRouter } from "expo-router";
 import { useCallback, useRef } from "react";
 
-const ROUTES: Record<BookConsultationMode, string> = {
+const ROUTES: Partial<Record<BookConsultationMode, string>> = {
   TRIAGE: "/(tabs)/consultations/new/triage",
   DIRECT: "/(tabs)/consultations/new/direct",
 };
@@ -21,7 +21,8 @@ export function useBookingModeSheet() {
 
   const handleSelect = useCallback(
     (mode: BookConsultationMode) => {
-      router.push(ROUTES[mode]);
+      const route = ROUTES[mode];
+      if (route) router.push(route);
     },
     [router],
   );

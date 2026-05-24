@@ -1,14 +1,13 @@
 import { ControlledTextarea } from "@/components/ui/controlled-textarea";
+import { useStepFormErrors } from "@/hooks/use-step-form-errors";
 import type { BookConsultationFormValues } from "@/lib/validation/book-consultation-schemas";
-import { Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { View } from "react-native";
 
-type Props = {
-  control: Control<BookConsultationFormValues>;
-  errors: Partial<Record<keyof BookConsultationFormValues, { message?: string }>>;
-};
+export function StepTriageAction() {
+  const { control } = useFormContext<BookConsultationFormValues>();
+  const errors = useStepFormErrors(["actionTaken", "reactionAfterAction"]);
 
-export function StepTriageAction({ control, errors }: Props) {
   return (
     <View className="gap-4">
       <ControlledTextarea

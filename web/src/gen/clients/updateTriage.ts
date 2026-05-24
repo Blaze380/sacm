@@ -8,7 +8,7 @@ import type { UpdateTriageMutationRequest, UpdateTriageMutationResponse, UpdateT
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateTriageUrl(id: UpdateTriagePathParams["id"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/triages/${id}` as const }
+  const res = { method: 'PATCH', url: `/api/triages/${id}` as const }
   return res
 }
 

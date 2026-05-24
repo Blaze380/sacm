@@ -9,7 +9,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-cl
 import { buildFormData } from "../.kubb/config";
 
 function getUploadFileUrl(fileType: UploadFilePathParams["fileType"]) {
-  const res = { method: 'POST', url: `http://localhost:8000/api/uploads/${fileType}` as const }
+  const res = { method: 'POST', url: `/api/uploads/${fileType}` as const }
   return res
 }
 

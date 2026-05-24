@@ -8,7 +8,7 @@ import type { DeleteMeMutationResponse, DeleteMe401 } from "../models/DeleteMe";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteMeUrl() {
-  const res = { method: 'DELETE', url: `http://localhost:8000/api/users/me` as const }
+  const res = { method: 'DELETE', url: `/api/users/me` as const }
   return res
 }
 

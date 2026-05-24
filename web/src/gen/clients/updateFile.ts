@@ -9,7 +9,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-cl
 import { buildFormData } from "../.kubb/config";
 
 function getUpdateFileUrl(fileType: UpdateFilePathParams["fileType"], fileName: UpdateFilePathParams["fileName"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/uploads/${fileType}/${fileName}` as const }
+  const res = { method: 'PATCH', url: `/api/uploads/${fileType}/${fileName}` as const }
   return res
 }
 

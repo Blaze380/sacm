@@ -1,6 +1,7 @@
 import { ControlledSelect } from "@/components/ui/controlled-select";
 import { ControlledTextarea } from "@/components/ui/controlled-textarea";
 import { Text } from "@/components/ui/text";
+import { useStepFormErrors } from "@/hooks/use-step-form-errors";
 import type { ConsultationTypeItem } from "@/lib/api/consultation-types";
 import type { BookConsultationFormValues } from "@/lib/validation/book-consultation-schemas";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -13,6 +14,7 @@ import { useState } from "react";
 type Props = {
   consultationTypes: ConsultationTypeItem[];
   isLoadingOptions: boolean;
+  lockConsultationType?: boolean;
 };
 
 function withDefaultTime(date: Date): Date {
@@ -26,12 +28,15 @@ function withDefaultTime(date: Date): Date {
 export function StepSchedule({
   consultationTypes,
   isLoadingOptions,
+  lockConsultationType = false,
 }: Props) {
   const [showPicker, setShowPicker] = useState(false);
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<BookConsultationFormValues>();
+  const { control } = useFormContext<BookConsultationFormValues>();
+  const errors = useStepFormErrors([
+    "consultationTypeId",
+    "date",
+    "notes",
+  ]);
   const { field: dateField } = useController({ control, name: "date" });
   const { field: typeField } = useController({
     control,
@@ -42,45 +47,27 @@ export function StepSchedule({
   const appointmentDate = dateField.value;
   const minDate = new Date();
 
-  // #region agent log
-  fetch("http://127.0.0.1:7651/ingest/99e5587c-42fc-439b-9250-4258fd9c3c1b", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Debug-Session-Id": "98573e",
-    },
-    body: JSON.stringify({
-      sessionId: "98573e",
-      location: "step-schedule.tsx:render",
-      message: "StepSchedule render",
-      data: {
-        optionsCount: options.length,
-        isLoadingOptions,
-        consultationTypeId: typeField.value,
-        dateFieldValueType:
-          appointmentDate === undefined
-            ? "undefined"
-            : appointmentDate instanceof Date
-              ? "Date"
-              : typeof appointmentDate,
-      },
-      timestamp: Date.now(),
-      hypothesisId: "H4-H6",
-    }),
-  }).catch(() => {});
-  // #endregion
-
   return (
     <View className="gap-4">
-      <ControlledSelect
-        control={control}
-        name="consultationTypeId"
-        options={options}
-        placeholder={
-          isLoadingOptions ? "A carregar tipos..." : "Tipo de consulta"
-        }
-        error={errors.consultationTypeId?.message}
-      />
+      {lockConsultationType ? (
+        <View className="gap-1">
+          <Text className="text-sm text-muted-foreground">Tipo de consulta</Text>
+          <Text className="text-base">
+            {options.find((o) => o.value === typeField.value)?.label ??
+              "Definido pelo encaminhamento"}
+          </Text>
+        </View>
+      ) : (
+        <ControlledSelect
+          control={control}
+          name="consultationTypeId"
+          options={options}
+          placeholder={
+            isLoadingOptions ? "A carregar tipos..." : "Tipo de consulta"
+          }
+          error={errors.consultationTypeId?.message}
+        />
+      )}
 
       <Pressable
         onPress={() => setShowPicker(true)}
@@ -117,28 +104,7 @@ export function StepSchedule({
               setShowPicker(false);
             }
             if (selected) {
-              const next = withDefaultTime(selected);
-              dateField.onChange(next);
-              // #region agent log
-              fetch(
-                "http://127.0.0.1:7651/ingest/99e5587c-42fc-439b-9250-4258fd9c3c1b",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    "X-Debug-Session-Id": "98573e",
-                  },
-                  body: JSON.stringify({
-                    sessionId: "98573e",
-                    location: "step-schedule.tsx:date-change",
-                    message: "date picker changed",
-                    data: { iso: next.toISOString() },
-                    timestamp: Date.now(),
-                    hypothesisId: "H4",
-                  }),
-                },
-              ).catch(() => {});
-              // #endregion
+              dateField.onChange(withDefaultTime(selected));
             }
           }}
         />

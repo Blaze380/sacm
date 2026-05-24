@@ -118,6 +118,19 @@ const users: User[] = [
     province: 'MAPUTO',
     neighborhood: 'Boquitxo',
   },
+  {
+    firstName: 'Ana',
+    lastName: 'Recepção',
+    email: 'recepcao@sacm.test',
+    password: 'Niuro123',
+    isStaff: true,
+    isSuperUser: false,
+    role: UserRole.RECEPCIONISTA,
+    phone: '258840000001',
+    city: 'Maputo',
+    province: 'MAPUTO',
+    neighborhood: 'Centro',
+  },
 ]
 
 async function seedUsers() {
@@ -188,11 +201,53 @@ async function resetDatabase() {
   await prisma.user.deleteMany()
 }
 
+async function seedTriages() {
+  const patient = await prisma.user.findUnique({
+    where: { email: 'blaze@kami.com' },
+  })
+  if (!patient) return
+
+  const samples = [
+    {
+      complaint: 'Dor de cabeça intensa há 3 dias',
+      symptom: 'Cefaleia pulsátil',
+      symptomDuration: '3 dias',
+      actionTaken: 'Paracetamol 500mg',
+      reactionAfterAction: 'Alívio parcial',
+    },
+    {
+      complaint: 'Febre e tosse seca',
+      symptom: 'Febre 38.5°C, tosse',
+      symptomDuration: '2 dias',
+      actionTaken: 'Repouso e hidratação',
+      reactionAfterAction: 'Sem melhoria significativa',
+    },
+    {
+      complaint: 'Dor abdominal após refeições',
+      symptom: 'Dor epigástrica',
+      symptomDuration: '1 semana',
+      actionTaken: 'Antiácido',
+      reactionAfterAction: 'Melhoria temporária',
+    },
+  ]
+
+  for (const sample of samples) {
+    await prisma.triage.create({
+      data: {
+        ...sample,
+        patientId: patient.id,
+        status: 'PENDENTE',
+      },
+    })
+  }
+}
+
 async function runSeed() {
   await seedSpecialty()
   await seedConsultation()
   await seedDoctors()
   await seedUsers()
+  await seedTriages()
 }
 
 async function main() {

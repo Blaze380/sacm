@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsOptional, IsEnum, IsDate } from "class-validator";
-import { TriageStatus } from "@prisma/client";
+import { TriageStatus, PriorityLevel } from "@prisma/client";
 
 export default class TriageDto {
   @IsNotEmpty()
@@ -16,7 +16,7 @@ export default class TriageDto {
 
   @IsNotEmpty()
   @IsString()
-  symptomTaken!: string;
+  symptom!: string;
 
   @IsNotEmpty()
   @IsString()
@@ -38,6 +38,22 @@ export default class TriageDto {
   @IsNotEmpty()
   @IsString()
   analyzedById?: string;
+
+  @IsOptional()
+  @IsString()
+  specialtyId?: string;
+
+  @IsOptional()
+  @IsString()
+  consultationTypeId?: string;
+
+  @IsOptional()
+  @IsEnum(PriorityLevel)
+  priority?: PriorityLevel;
+
+  @IsOptional()
+  @IsString()
+  rejectionReason?: string;
 
   @IsDate()
   createdAt!: Date;

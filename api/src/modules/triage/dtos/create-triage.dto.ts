@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsOptional, IsEnum, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { Type, Transform } from "class-transformer";
 import { TriageStatus } from "@prisma/client";
 
 class UserForCreateTriageDto {
@@ -17,13 +17,16 @@ export default class CreateTriageDto {
   @IsString()
   symptomDuration!: string;
 
+  /** Aceita `symptom` ou alias legado `symptomTaken` no JSON (não é coluna Prisma). */
+  @Transform(({ obj }) => obj.symptom ?? obj.symptomTaken)
   @IsNotEmpty()
   @IsString()
-  symptomTaken!: string;
+  symptom!: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  actionTaken!: string;
+  actionTaken?: string;
+
 
   @IsNotEmpty()
   @IsString()

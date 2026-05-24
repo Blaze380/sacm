@@ -8,7 +8,7 @@ import type { DeleteSpecialtyMutationResponse, DeleteSpecialtyPathParams, Delete
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getDeleteSpecialtyUrl(id: DeleteSpecialtyPathParams["id"]) {
-  const res = { method: 'DELETE', url: `http://localhost:8000/api/specialties/${id}` as const }
+  const res = { method: 'DELETE', url: `/api/specialties/${id}` as const }
   return res
 }
 

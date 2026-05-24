@@ -1,17 +1,23 @@
 model Triage {
-  id                  String       @id @default(uuid())
+  id                  String            @id @default(uuid())
   complaint           String
   symptomDuration     String
   symptom             String
   actionTaken         String
   reactionAfterAction String
-  status              TriageStatus @default(PENDENTE)
+  status              TriageStatus      @default(PENDENTE)
   patientId           String
-  patient             User         @relation(fields: [patientId], references: [id])
+  patient             User              @relation(fields: [patientId], references: [id])
   analyzedById        String?
-  analyzedBy          User?        @relation("TriageAnalyzedBy", fields: [analyzedById], references: [id])
-  createdAt           DateTime     @default(now())
-  updatedAt           DateTime     @updatedAt
+  analyzedBy          User?             @relation("TriageAnalyzedBy", fields: [analyzedById], references: [id])
+  specialtyId         String?
+  specialty           Specialty?        @relation(fields: [specialtyId], references: [id])
+  consultationTypeId  String?
+  consultationType    ConsultationType? @relation(fields: [consultationTypeId], references: [id])
+  priority            PriorityLevel?
+  rejectionReason     String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 
   appointments Appointment[]
 }

@@ -1,4 +1,7 @@
-import triageService from "./triage.service";
+import {
+  beforeCreateOne as stripLegacySymptomField,
+  beforeUpdateOne as guardPatientTriageUpdate,
+} from "./triage.interceptors";
 
 export const beforeFindOne = [];
 
@@ -6,13 +9,14 @@ export const afterFindOne = [];
 
 export const onFindOneError = [];
 
-export const beforeUpdateOne = [];
+export const beforeUpdateOne = guardPatientTriageUpdate;
 
 export const afterUpdateOne = [];
 
 export const onUpdateOneError = [];
 
-export const beforeCreateOne = [];
+/** Arkos carrega hooks.ts; normaliza body antes do Prisma (sem symptomTaken). */
+export const beforeCreateOne = stripLegacySymptomField;
 
 export const afterCreateOne = [];
 

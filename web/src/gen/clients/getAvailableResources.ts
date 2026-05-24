@@ -8,7 +8,7 @@ import type { GetAvailableResourcesQueryResponse } from "../models/GetAvailableR
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getGetAvailableResourcesUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/available-resources` as const }
+  const res = { method: 'GET', url: `/api/available-resources` as const }
   return res
 }
 

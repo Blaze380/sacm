@@ -8,7 +8,7 @@ import type { UpdatePasswordMutationRequest, UpdatePasswordMutationResponse, Upd
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdatePasswordUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/auth/update-password` as const }
+  const res = { method: 'POST', url: `/api/auth/update-password` as const }
   return res
 }
 

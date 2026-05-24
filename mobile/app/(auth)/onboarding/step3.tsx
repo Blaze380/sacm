@@ -41,7 +41,7 @@ export default function OnboardingStep3() {
       <View className="w-full px-6 pb-4">
         <Button
           className="w-full"
-          onPress={() => router.replace("/(tabs)")}
+          onPress={() => router.replace("/(tabs)/home")}
         >
           <Text className="text-white">Começar</Text>
         </Button>

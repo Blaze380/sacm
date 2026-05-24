@@ -8,7 +8,7 @@ import type { FindTriagesQueryResponse, FindTriagesQueryParams, FindTriages401, 
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindTriagesUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/triages` as const }
+  const res = { method: 'GET', url: `/api/triages` as const }
   return res
 }
 

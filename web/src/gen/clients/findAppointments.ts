@@ -8,7 +8,7 @@ import type { FindAppointmentsQueryResponse, FindAppointmentsQueryParams, FindAp
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindAppointmentsUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/appointments` as const }
+  const res = { method: 'GET', url: `/api/appointments` as const }
   return res
 }
 

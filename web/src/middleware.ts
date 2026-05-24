@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
   if (pathname === '/admin/login') {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (token) {
-      return NextResponse.redirect(new URL('/admin/especialidades', request.url))
+      return NextResponse.redirect(new URL('/admin/triagens', request.url))
     }
     return NextResponse.next()
   }

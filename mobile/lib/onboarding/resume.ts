@@ -4,7 +4,7 @@ export function shouldResumeRedirect(
   currentPath: string,
   targetRoute: OnboardingRoute,
 ): boolean {
-  if (targetRoute === "/(tabs)" && currentPath.includes("step3")) {
+  if (targetRoute === "/(tabs)/home" && currentPath.includes("step3")) {
     return false;
   }
 
@@ -20,7 +20,7 @@ export function shouldResumeRedirect(
     }
   }
 
-  if (targetRoute === "/(tabs)") {
+  if (targetRoute === "/(tabs)/home") {
     return !currentPath.includes("(tabs)");
   }
 

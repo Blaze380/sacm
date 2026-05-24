@@ -43,8 +43,9 @@ export function ControllerInput<T extends FieldValues>({
         textContentType={textContentType}
         autoComplete={autoComplete}
         placeholder={placeholder}
-        value={field.value}
+        value={typeof field.value === "string" ? field.value : ""}
         onChangeText={field.onChange}
+        onBlur={field.onBlur}
         secureTextEntry={secureTextEntry}
       />
       {error && <Text className="text-red-400">{error}</Text>}

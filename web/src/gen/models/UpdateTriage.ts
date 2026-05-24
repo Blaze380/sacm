@@ -116,7 +116,7 @@ export type UpdateTriageMutationRequest = {
      * @minLength 1
      * @type string | undefined
     */
-    symptomTaken?: string;
+    symptom?: string;
     /**
      * @minLength 1
      * @type string | undefined

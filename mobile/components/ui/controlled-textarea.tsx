@@ -24,7 +24,7 @@ export function ControlledTextarea<T extends FieldValues>({
   return (
     <View className={cn("w-full", className)}>
       <Textarea
-        value={field.value ?? ""}
+        value={typeof field.value === "string" ? field.value : ""}
         onChangeText={field.onChange}
         onBlur={field.onBlur}
         placeholder={placeholder}

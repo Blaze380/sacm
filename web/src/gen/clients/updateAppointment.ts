@@ -8,7 +8,7 @@ import type { UpdateAppointmentMutationRequest, UpdateAppointmentMutationRespons
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateAppointmentUrl(id: UpdateAppointmentPathParams["id"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/appointments/${id}` as const }
+  const res = { method: 'PATCH', url: `/api/appointments/${id}` as const }
   return res
 }
 

@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import {
   CalendarCheck,
   CalendarDays,
+  ClipboardList,
   LogOut,
   Stethoscope,
   Tags,
@@ -23,6 +25,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { getMe } from '@/gen/clients/getMe'
+import { apiClient } from '@/lib/api/client'
+import { isAdmin, type AuthUser } from '@/lib/auth/guards'
 import { clearAccessToken } from '@/lib/auth/session'
 
 const gestaoItems = [
@@ -32,49 +37,67 @@ const gestaoItems = [
 ]
 
 const operacaoItems = [
-  { href: '/admin/utilizadores', label: 'Utilizadores', icon: Users },
-  { href: '/admin/consultas', label: 'Consultas', icon: CalendarCheck },
+  { href: '/admin/triagens', label: 'Triagens', icon: ClipboardList },
+  { href: '/admin/utilizadores', label: 'Utilizadores', icon: Users, adminOnly: true },
+  { href: '/admin/consultas', label: 'Consultas', icon: CalendarCheck, adminOnly: true },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const [user, setUser] = useState<AuthUser | null>(null)
+
+  useEffect(() => {
+    getMe({ client: apiClient })
+      .then((me) => setUser(me as AuthUser))
+      .catch(() => setUser(null))
+  }, [])
+
+  const showGestao = user ? isAdmin(user) : false
 
   async function handleLogout() {
     await clearAccessToken()
     window.location.href = '/admin/login'
   }
 
+  const visibleOperacao = operacaoItems.filter(
+    (item) => !item.adminOnly || (user && isAdmin(user))
+  )
+
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
         <div className="flex flex-col gap-0.5">
           <span className="text-sm font-medium">SACM</span>
-          <span className="text-xs text-muted-foreground">Administração</span>
+          <span className="text-xs text-muted-foreground">
+            {user?.role === 'RECEPCIONISTA' ? 'Recepção' : 'Administração'}
+          </span>
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Gestão</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {gestaoItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)}>
-                    <Link href={item.href}>
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {showGestao ? (
+          <SidebarGroup>
+            <SidebarGroupLabel>Gestão</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {gestaoItems.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)}>
+                      <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ) : null}
         <SidebarGroup>
           <SidebarGroupLabel>Operação</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {operacaoItems.map((item) => (
+              {visibleOperacao.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)}>
                     <Link href={item.href}>

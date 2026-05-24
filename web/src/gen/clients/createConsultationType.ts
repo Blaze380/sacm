@@ -8,7 +8,7 @@ import type { CreateConsultationTypeMutationRequest, CreateConsultationTypeMutat
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getCreateConsultationTypeUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/consultation-types` as const }
+  const res = { method: 'POST', url: `/api/consultation-types` as const }
   return res
 }
 

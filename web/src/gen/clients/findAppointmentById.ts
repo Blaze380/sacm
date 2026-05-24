@@ -8,7 +8,7 @@ import type { FindAppointmentByIdQueryResponse, FindAppointmentByIdPathParams, F
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindAppointmentByIdUrl(id: FindAppointmentByIdPathParams["id"]) {
-  const res = { method: 'GET', url: `http://localhost:8000/api/appointments/${id}` as const }
+  const res = { method: 'GET', url: `/api/appointments/${id}` as const }
   return res
 }
 

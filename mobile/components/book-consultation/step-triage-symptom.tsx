@@ -1,22 +1,21 @@
 import { ControllerInput } from "@/components/ui/controlled-input";
 import { ControlledTextarea } from "@/components/ui/controlled-textarea";
+import { useStepFormErrors } from "@/hooks/use-step-form-errors";
 import type { BookConsultationFormValues } from "@/lib/validation/book-consultation-schemas";
-import { Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { View } from "react-native";
 
-type Props = {
-  control: Control<BookConsultationFormValues>;
-  errors: Partial<Record<keyof BookConsultationFormValues, { message?: string }>>;
-};
+export function StepTriageSymptom() {
+  const { control } = useFormContext<BookConsultationFormValues>();
+  const errors = useStepFormErrors(["symptomTaken", "symptomDuration"]);
 
-export function StepTriageSymptom({ control, errors }: Props) {
   return (
     <View className="gap-4">
       <ControlledTextarea
         control={control}
-        name="symptom"
+        name="symptomTaken"
         placeholder="Descreva o sintoma principal"
-        error={errors.symptom?.message}
+        error={errors.symptomTaken?.message}
       />
       <ControllerInput
         control={control}

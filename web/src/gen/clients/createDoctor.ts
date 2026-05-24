@@ -8,7 +8,7 @@ import type { CreateDoctorMutationRequest, CreateDoctorMutationResponse, CreateD
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getCreateDoctorUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/doctors` as const }
+  const res = { method: 'POST', url: `/api/doctors` as const }
   return res
 }
 

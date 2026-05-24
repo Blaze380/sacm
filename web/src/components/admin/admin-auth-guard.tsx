@@ -1,16 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { Spinner } from '@/components/ui/spinner'
 import { apiClient } from '@/lib/api/client'
-import { isAdmin, type AuthUser } from '@/lib/auth/guards'
+import {
+  canAccessPath,
+  canAccessStaffPanel,
+  getDefaultStaffRoute,
+  type AuthUser,
+} from '@/lib/auth/guards'
 import { clearAccessToken } from '@/lib/auth/session'
 import { getMe } from '@/gen/clients/getMe'
 
 export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const pathname = usePathname()
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -20,12 +26,17 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
     async function verify() {
       try {
         const me = await getMe({ client: apiClient })
-        if (!isAdmin(me as AuthUser)) {
+        if (!canAccessStaffPanel(me as AuthUser)) {
           await clearAccessToken()
           router.replace('/admin/login')
           return
         }
-        if (!cancelled) setUser(me as AuthUser)
+        const authUser = me as AuthUser
+        if (!canAccessPath(authUser, pathname)) {
+          router.replace(getDefaultStaffRoute(authUser.role))
+          return
+        }
+        if (!cancelled) setUser(authUser)
       } catch {
         await clearAccessToken()
         router.replace('/admin/login')
@@ -38,7 +49,7 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true
     }
-  }, [router])
+  }, [router, pathname])
 
   if (loading) {
     return (

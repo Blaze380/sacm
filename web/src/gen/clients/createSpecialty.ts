@@ -8,7 +8,7 @@ import type { CreateSpecialtyMutationRequest, CreateSpecialtyMutationResponse, C
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getCreateSpecialtyUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/specialties` as const }
+  const res = { method: 'POST', url: `/api/specialties` as const }
   return res
 }
 

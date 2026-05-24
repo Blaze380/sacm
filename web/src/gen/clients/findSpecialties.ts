@@ -8,7 +8,7 @@ import type { FindSpecialtiesQueryResponse, FindSpecialtiesQueryParams, FindSpec
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindSpecialtiesUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/specialties` as const }
+  const res = { method: 'GET', url: `/api/specialties` as const }
   return res
 }
 

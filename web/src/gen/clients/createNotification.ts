@@ -8,7 +8,7 @@ import type { CreateNotificationMutationRequest, CreateNotificationMutationRespo
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getCreateNotificationUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/notifications` as const }
+  const res = { method: 'POST', url: `/api/notifications` as const }
   return res
 }
 

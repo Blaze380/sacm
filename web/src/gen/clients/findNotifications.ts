@@ -8,7 +8,7 @@ import type { FindNotificationsQueryResponse, FindNotificationsQueryParams, Find
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindNotificationsUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/notifications` as const }
+  const res = { method: 'GET', url: `/api/notifications` as const }
   return res
 }
 

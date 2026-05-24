@@ -8,7 +8,7 @@ import type { FindSpecialtyByIdQueryResponse, FindSpecialtyByIdPathParams, FindS
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindSpecialtyByIdUrl(id: FindSpecialtyByIdPathParams["id"]) {
-  const res = { method: 'GET', url: `http://localhost:8000/api/specialties/${id}` as const }
+  const res = { method: 'GET', url: `/api/specialties/${id}` as const }
   return res
 }
 

@@ -36,7 +36,7 @@ export default function Login() {
       const user = await getCurrentUser();
 
       if (isOnboardingComplete(user)) {
-        router.replace("/(tabs)");
+        router.replace("/(tabs)/home");
       } else {
         router.replace(getOnboardingRoute(user));
       }

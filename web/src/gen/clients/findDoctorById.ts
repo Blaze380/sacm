@@ -8,7 +8,7 @@ import type { FindDoctorByIdQueryResponse, FindDoctorByIdPathParams, FindDoctorB
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindDoctorByIdUrl(id: FindDoctorByIdPathParams["id"]) {
-  const res = { method: 'GET', url: `http://localhost:8000/api/doctors/${id}` as const }
+  const res = { method: 'GET', url: `/api/doctors/${id}` as const }
   return res
 }
 

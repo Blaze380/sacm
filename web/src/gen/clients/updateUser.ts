@@ -8,7 +8,7 @@ import type { UpdateUserMutationRequest, UpdateUserMutationResponse, UpdateUserP
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateUserUrl(id: UpdateUserPathParams["id"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/users/${id}` as const }
+  const res = { method: 'PATCH', url: `/api/users/${id}` as const }
   return res
 }
 

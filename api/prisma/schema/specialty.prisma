@@ -3,6 +3,7 @@ model Specialty {
   name         String
   doctors      Doctor[]
   appointments Appointment[]
+  triages      Triage[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }

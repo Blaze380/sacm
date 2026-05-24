@@ -1,4 +1,3 @@
-import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { BookConsultationMode } from "@/lib/validation/book-consultation-schemas";
@@ -27,7 +26,16 @@ export function TypeOptionCard({
         selected ? "border-primary bg-primary/5" : "border-border bg-card",
       )}
     >
-      <RadioGroupItem value={value} />
+      <View
+        className={cn(
+          "mt-0.5 aspect-square size-4 shrink-0 items-center justify-center rounded-full border",
+          selected ? "border-primary" : "border-input",
+        )}
+      >
+        {selected ? (
+          <View className="size-2 rounded-full bg-primary" />
+        ) : null}
+      </View>
       <View className="flex-1 gap-1">
         <Text className="font-semibold text-base">{title}</Text>
         <Text className="text-muted-foreground text-sm">{description}</Text>

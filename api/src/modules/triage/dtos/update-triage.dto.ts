@@ -1,6 +1,6 @@
 import { IsOptional, IsNotEmpty, IsString, IsEnum, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
-import { TriageStatus } from "@prisma/client";
+import { TriageStatus, PriorityLevel } from "@prisma/client";
 
 class UserForUpdateTriageDto {
   @IsNotEmpty()
@@ -22,7 +22,7 @@ export default class UpdateTriageDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  symptomTaken?: string;
+  symptom?: string;
 
   @IsOptional()
   @IsNotEmpty()
@@ -47,4 +47,22 @@ export default class UpdateTriageDto {
   @ValidateNested()
   @Type(() => UserForUpdateTriageDto)
   analyzedBy?: UserForUpdateTriageDto;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  specialtyId?: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  consultationTypeId?: string;
+
+  @IsOptional()
+  @IsEnum(PriorityLevel)
+  priority?: PriorityLevel;
+
+  @IsOptional()
+  @IsString()
+  rejectionReason?: string;
 }

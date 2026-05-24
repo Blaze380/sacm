@@ -183,22 +183,22 @@ export type FindAppointmentsQueryParams = {
     };
 };
 
-export const dataStatusEnum = {
+export const dataStatusEnum2 = {
     AGENDADA: "AGENDADA",
     CANCELADA: "CANCELADA",
     REAGENDADA: "REAGENDADA",
     CONCLUIDA: "CONCLUIDA"
 } as const;
 
-export type DataStatusEnumKey = (typeof dataStatusEnum)[keyof typeof dataStatusEnum];
+export type DataStatusEnum2Key = (typeof dataStatusEnum2)[keyof typeof dataStatusEnum2];
 
-export const dataPriorityEnum = {
+export const dataPriorityEnum2 = {
     BAIXA: "BAIXA",
     MEDIA: "MEDIA",
     ALTA: "ALTA"
 } as const;
 
-export type DataPriorityEnumKey = (typeof dataPriorityEnum)[keyof typeof dataPriorityEnum];
+export type DataPriorityEnum2Key = (typeof dataPriorityEnum2)[keyof typeof dataPriorityEnum2];
 
 export const dataSourceEnum = {
     TRIAGEM: "TRIAGEM",
@@ -261,12 +261,12 @@ export type FindAppointments200 = {
          * @default "AGENDADA"
          * @type string
         */
-        status: DataStatusEnumKey;
+        status: DataStatusEnum2Key;
         /**
          * @default "MEDIA"
          * @type string
         */
-        priority: DataPriorityEnumKey;
+        priority: DataPriorityEnum2Key;
         /**
          * @default "DIRECTA"
          * @type string

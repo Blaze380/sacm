@@ -1,6 +1,6 @@
 import "../global.css"
 import { DarkTheme, DefaultTheme, ThemeProvider, useTheme, } from '@react-navigation/native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useEffect } from "react";
@@ -19,7 +19,9 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+  const segments = useSegments();
   const { colors } = useTheme();
+  const showDevSitemapButton = !segments.includes("new");
 
   useEffect(() => {
     setAuthRouter(router);
@@ -28,7 +30,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
     {/* <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
-    <GestureHandlerRootView  >
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
 
       <Stack screenOptions={{headerShown:false}} >

@@ -40,7 +40,7 @@ export const createTriage403Schema = z.any()
 export const createTriageMutationRequestSchema = z.object({
     "complaint": z.string().min(1),
 "symptomDuration": z.string().min(1),
-"symptomTaken": z.string().min(1),
+"symptom": z.string().min(1),
 "actionTaken": z.string().min(1),
 "reactionAfterAction": z.string().min(1),
 "status": z.optional(z.enum(["PENDENTE", "EM_ANALISE", "CANCELADO", "REENCAMINHADO"])),

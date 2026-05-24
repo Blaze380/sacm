@@ -2476,7 +2476,7 @@ paths:
                 symptomDuration:
                   type: string
                   minLength: 1
-                symptomTaken:
+                symptom:
                   type: string
                   minLength: 1
                 actionTaken:
@@ -2512,7 +2512,7 @@ paths:
               required:
                 - complaint
                 - symptomDuration
-                - symptomTaken
+                - symptom
                 - actionTaken
                 - reactionAfterAction
     get:
@@ -2861,7 +2861,7 @@ paths:
                 symptomDuration:
                   type: string
                   minLength: 1
-                symptomTaken:
+                symptom:
                   type: string
                   minLength: 1
                 actionTaken:

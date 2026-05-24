@@ -6,9 +6,29 @@ export type PaginatedResponse<T> = {
   data?: T[];
 };
 
+function isPaginatedBody<T>(value: unknown): value is PaginatedResponse<T> {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    "data" in value &&
+    Array.isArray((value as PaginatedResponse<T>).data)
+  );
+}
+
 export function unwrapPaginated<T>(
-  payload: PaginatedResponse<T> | { data: PaginatedResponse<T> },
+  payload: PaginatedResponse<T> | { data: PaginatedResponse<T> | T[] },
 ): T[] {
-  const page = unwrapApiData(payload as PaginatedResponse<T>);
-  return page.data ?? [];
+  const unwrapped = unwrapApiData(
+    payload as PaginatedResponse<T> | { data: PaginatedResponse<T> | T[] },
+  );
+
+  if (Array.isArray(unwrapped)) {
+    return unwrapped;
+  }
+
+  if (isPaginatedBody<T>(unwrapped)) {
+    return unwrapped.data ?? [];
+  }
+
+  return [];
 }

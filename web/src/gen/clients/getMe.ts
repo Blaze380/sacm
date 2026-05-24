@@ -8,7 +8,7 @@ import type { GetMeQueryResponse, GetMe401 } from "../models/GetMe";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getGetMeUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/users/me` as const }
+  const res = { method: 'GET', url: `/api/users/me` as const }
   return res
 }
 

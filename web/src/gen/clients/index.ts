@@ -1,3 +1,4 @@
+export { approveTriage } from "./approveTriage";
 export { createAppointment } from "./createAppointment";
 export { createConsultationType } from "./createConsultationType";
 export { createDoctor } from "./createDoctor";
@@ -35,7 +36,9 @@ export { getAvailableResources } from "./getAvailableResources";
 export { getMe } from "./getMe";
 export { login } from "./login";
 export { logout } from "./logout";
+export { rejectTriage } from "./rejectTriage";
 export { signup } from "./signup";
+export { startTriageReview } from "./startTriageReview";
 export { updateAppointment } from "./updateAppointment";
 export { updateConsultationType } from "./updateConsultationType";
 export { updateDoctor } from "./updateDoctor";

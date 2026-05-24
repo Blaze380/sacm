@@ -8,7 +8,7 @@ import type { SignupMutationRequest, SignupMutationResponse, Signup400, Signup40
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getSignupUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/auth/signup` as const }
+  const res = { method: 'POST', url: `/api/auth/signup` as const }
   return res
 }
 

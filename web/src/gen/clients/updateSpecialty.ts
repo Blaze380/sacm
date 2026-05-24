@@ -8,7 +8,7 @@ import type { UpdateSpecialtyMutationRequest, UpdateSpecialtyMutationResponse, U
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateSpecialtyUrl(id: UpdateSpecialtyPathParams["id"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/specialties/${id}` as const }
+  const res = { method: 'PATCH', url: `/api/specialties/${id}` as const }
   return res
 }
 

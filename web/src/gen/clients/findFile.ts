@@ -8,7 +8,7 @@ import type { FindFileQueryResponse, FindFilePathParams, FindFile404 } from "../
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindFileUrl(path: FindFilePathParams["path"]) {
-  const res = { method: 'GET', url: `http://localhost:8000/api/uploads/${path}` as const }
+  const res = { method: 'GET', url: `/api/uploads/${path}` as const }
   return res
 }
 

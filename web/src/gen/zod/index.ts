@@ -1,3 +1,4 @@
+export { approveTriage200Schema, approveTriage400Schema, approveTriage401Schema, approveTriage403Schema, approveTriage404Schema, approveTriageMutationRequestSchema, approveTriageMutationResponseSchema, approveTriagePathParamsSchema } from "./approveTriageSchema";
 export { createAppointment201Schema, createAppointment400Schema, createAppointment401Schema, createAppointment403Schema, createAppointmentMutationRequestSchema, createAppointmentMutationResponseSchema } from "./createAppointmentSchema";
 export { createConsultationType201Schema, createConsultationType400Schema, createConsultationType401Schema, createConsultationType403Schema, createConsultationTypeMutationRequestSchema, createConsultationTypeMutationResponseSchema } from "./createConsultationTypeSchema";
 export { createDoctorRequestSchema } from "./createDoctorRequestSchema";
@@ -39,7 +40,10 @@ export { getAvailableResources200Schema, getAvailableResourcesQueryResponseSchem
 export { getMe200Schema, getMe401Schema, getMeQueryResponseSchema } from "./getMeSchema";
 export { login200Schema, login400Schema, login401Schema, loginMutationRequestSchema, loginMutationResponseSchema } from "./loginSchema";
 export { logout204Schema, logout401Schema, logoutMutationResponseSchema } from "./logoutSchema";
+export { rejectTriage200Schema, rejectTriage400Schema, rejectTriage401Schema, rejectTriage403Schema, rejectTriage404Schema, rejectTriageMutationRequestSchema, rejectTriageMutationResponseSchema, rejectTriagePathParamsSchema } from "./rejectTriageSchema";
 export { signup201Schema, signup400Schema, signup409Schema, signupMutationRequestSchema, signupMutationResponseSchema } from "./signupSchema";
+export { startTriageReview200Schema, startTriageReview401Schema, startTriageReview403Schema, startTriageReview404Schema, startTriageReviewMutationResponseSchema, startTriageReviewPathParamsSchema } from "./startTriageReviewSchema";
+export { triageResponseSchema } from "./triageResponseSchema";
 export { updateAppointment200Schema, updateAppointment400Schema, updateAppointment401Schema, updateAppointment403Schema, updateAppointment404Schema, updateAppointmentMutationRequestSchema, updateAppointmentMutationResponseSchema, updateAppointmentPathParamsSchema } from "./updateAppointmentSchema";
 export { updateConsultationType200Schema, updateConsultationType400Schema, updateConsultationType401Schema, updateConsultationType403Schema, updateConsultationType404Schema, updateConsultationTypeMutationRequestSchema, updateConsultationTypeMutationResponseSchema, updateConsultationTypePathParamsSchema } from "./updateConsultationTypeSchema";
 export { updateDoctorRequestSchema } from "./updateDoctorRequestSchema";

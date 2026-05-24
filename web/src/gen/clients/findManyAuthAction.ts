@@ -8,7 +8,7 @@ import type { FindManyAuthActionQueryResponse, FindManyAuthAction401, FindManyAu
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindManyAuthActionUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/auth-actions` as const }
+  const res = { method: 'GET', url: `/api/auth-actions` as const }
   return res
 }
 

@@ -1,13 +1,12 @@
 import { ControlledTextarea } from "@/components/ui/controlled-textarea";
+import { useStepFormErrors } from "@/hooks/use-step-form-errors";
 import type { BookConsultationFormValues } from "@/lib/validation/book-consultation-schemas";
-import { Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
-type Props = {
-  control: Control<BookConsultationFormValues>;
-  errors: Partial<Record<keyof BookConsultationFormValues, { message?: string }>>;
-};
+export function StepTriageComplaint() {
+  const { control } = useFormContext<BookConsultationFormValues>();
+  const errors = useStepFormErrors(["complaint"]);
 
-export function StepTriageComplaint({ control, errors }: Props) {
   return (
     <ControlledTextarea
       control={control}

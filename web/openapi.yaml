@@ -2643,7 +2643,7 @@ paths:
                 symptomDuration:
                   type: string
                   minLength: 1
-                symptomTaken:
+                symptom:
                   type: string
                   minLength: 1
                 actionTaken:
@@ -2679,7 +2679,7 @@ paths:
               required:
                 - complaint
                 - symptomDuration
-                - symptomTaken
+                - symptom
                 - actionTaken
                 - reactionAfterAction
     get:
@@ -3028,7 +3028,7 @@ paths:
                 symptomDuration:
                   type: string
                   minLength: 1
-                symptomTaken:
+                symptom:
                   type: string
                   minLength: 1
                 actionTaken:
@@ -3085,6 +3085,123 @@ paths:
           required: true
           schema:
             type: string
+  /api/triages/{id}/approve:
+    post:
+      tags:
+        - Triages
+      summary: Approve and refer triage
+      description: Approves a triage and sets referral metadata for patient scheduling
+      operationId: approveTriage
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - specialtyId
+                - consultationTypeId
+                - priority
+              properties:
+                specialtyId:
+                  type: string
+                consultationTypeId:
+                  type: string
+                priority:
+                  type: string
+                  enum:
+                    - BAIXA
+                    - MEDIA
+                    - ALTA
+      responses:
+        "200":
+          description: triage approved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResponse'
+        "400":
+          description: Invalid input or triage state
+        "401":
+          description: Authentication required
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: triage not found
+  /api/triages/{id}/reject:
+    post:
+      tags:
+        - Triages
+      summary: Reject triage
+      description: Rejects a pending or in-review triage
+      operationId: rejectTriage
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rejectionReason:
+                  type: string
+      responses:
+        "200":
+          description: triage rejected successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResponse'
+        "400":
+          description: Invalid triage state
+        "401":
+          description: Authentication required
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: triage not found
+  /api/triages/{id}/start-review:
+    patch:
+      tags:
+        - Triages
+      summary: Start triage review
+      description: Marks a pending triage as under review
+      operationId: startTriageReview
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: triage marked as under review
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResponse'
+        "401":
+          description: Authentication required
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: triage not found
   /api/users:
     post:
       tags:
@@ -3971,6 +4088,89 @@ components:
           format: uuid
         availability:
           $ref: '#/components/schemas/DoctorAvailability'
+    TriageResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            complaint:
+              type: string
+            symptomDuration:
+              type: string
+            symptom:
+              type: string
+            actionTaken:
+              type: string
+            reactionAfterAction:
+              type: string
+            status:
+              type: string
+              enum:
+                - PENDENTE
+                - EM_ANALISE
+                - CANCELADO
+                - REENCAMINHADO
+            patientId:
+              type: string
+            analyzedById:
+              type: string
+            specialtyId:
+              type: string
+            consultationTypeId:
+              type: string
+            priority:
+              type: string
+              enum:
+                - BAIXA
+                - MEDIA
+                - ALTA
+            rejectionReason:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            patient:
+              type: object
+              properties:
+                id:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+            analyzedBy:
+              type: object
+              properties:
+                id:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+            specialty:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+            consultationType:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
   securitySchemes:
     BearerAuth:
       type: http

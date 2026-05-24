@@ -8,7 +8,7 @@ import type { FindDoctorsQueryResponse, FindDoctorsQueryParams, FindDoctors401, 
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getFindDoctorsUrl() {
-  const res = { method: 'GET', url: `http://localhost:8000/api/doctors` as const }
+  const res = { method: 'GET', url: `/api/doctors` as const }
   return res
 }
 

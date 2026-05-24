@@ -2,7 +2,11 @@ import {
   fetchPatientAppointments,
   fetchUpcomingAppointments,
 } from "@/lib/api/appointments";
-import { fetchPatientTriages, fetchPendingTriages } from "@/lib/api/triages";
+import {
+  fetchPatientTriages,
+  fetchPendingTriages,
+  fetchReferredTriages,
+} from "@/lib/api/triages";
 import type { AppointmentItem } from "@/lib/api/appointments";
 import type { HomeUpcomingItem } from "@/lib/home/types";
 
@@ -33,7 +37,10 @@ export async function buildPatientConsultationItems(
     : allAppointments;
 
   const triages = upcomingOnly
-    ? await fetchPendingTriages(patientId, linkedTriageIds)
+    ? [
+        ...(await fetchPendingTriages(patientId, linkedTriageIds)),
+        ...(await fetchReferredTriages(patientId, linkedTriageIds)),
+      ]
     : (await fetchPatientTriages(patientId)).filter(
         (t) => !linkedTriageIds.has(t.id),
       );

@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "complaint": { "type": "string" },
+        "symptomDuration": { "type": "string" },
+        "symptom": { "type": "string" },
+        "actionTaken": { "type": "string" },
+        "reactionAfterAction": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["PENDENTE", "EM_ANALISE", "CANCELADO", "REENCAMINHADO"]
+        },
+        "patientId": { "type": "string" },
+        "analyzedById": { "type": "string" },
+        "specialtyId": { "type": "string" },
+        "consultationTypeId": { "type": "string" },
+        "priority": { "type": "string", "enum": ["BAIXA", "MEDIA", "ALTA"] },
+        "rejectionReason": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "patient": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "firstName": { "type": "string" },
+            "lastName": { "type": "string" },
+            "email": { "type": "string" },
+            "phone": { "type": "string" }
+          }
+        },
+        "analyzedBy": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "firstName": { "type": "string" },
+            "lastName": { "type": "string" }
+          }
+        },
+        "specialty": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "name": { "type": "string" }
+          }
+        },
+        "consultationType": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "name": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "x-readme-ref-name": "TriageResponse"
+}

@@ -8,7 +8,7 @@ import type { UpdateNotificationMutationRequest, UpdateNotificationMutationRespo
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getUpdateNotificationUrl(id: UpdateNotificationPathParams["id"]) {
-  const res = { method: 'PATCH', url: `http://localhost:8000/api/notifications/${id}` as const }
+  const res = { method: 'PATCH', url: `/api/notifications/${id}` as const }
   return res
 }
 

@@ -49,7 +49,7 @@ export const updateTriage404Schema = z.any()
 export const updateTriageMutationRequestSchema = z.object({
     "complaint": z.optional(z.string().min(1)),
 "symptomDuration": z.optional(z.string().min(1)),
-"symptomTaken": z.optional(z.string().min(1)),
+"symptom": z.optional(z.string().min(1)),
 "actionTaken": z.optional(z.string().min(1)),
 "reactionAfterAction": z.optional(z.string().min(1)),
 "status": z.optional(z.enum(["PENDENTE", "EM_ANALISE", "CANCELADO", "REENCAMINHADO"])),

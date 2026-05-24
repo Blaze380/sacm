@@ -2,7 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { X } from "lucide-react-native";
 import { ReactNode } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
@@ -35,7 +41,12 @@ export function WizardShell({
   submitError,
 }: Props) {
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <SafeAreaView className="flex-1 bg-background" edges={["top", "bottom"]}>
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
+      >
       <View className="px-6 pt-4 pb-2 flex-row items-center justify-between">
         <Pressable
           onPress={onClosePress}
@@ -57,7 +68,8 @@ export function WizardShell({
         <ScrollView
           className="flex-1"
           keyboardShouldPersistTaps="handled"
-          contentContainerClassName="pb-4"
+          keyboardDismissMode="on-drag"
+          contentContainerClassName="pb-8"
           showsVerticalScrollIndicator={false}
         >
           {children}
@@ -82,6 +94,7 @@ export function WizardShell({
           <Text className="text-white">{primaryLabel}</Text>
         </Button>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

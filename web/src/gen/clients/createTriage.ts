@@ -8,7 +8,7 @@ import type { CreateTriageMutationRequest, CreateTriageMutationResponse, CreateT
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getCreateTriageUrl() {
-  const res = { method: 'POST', url: `http://localhost:8000/api/triages` as const }
+  const res = { method: 'POST', url: `/api/triages` as const }
   return res
 }
 

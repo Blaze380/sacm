@@ -6,4 +6,5 @@ model ConsultationType {
   updatedAt    DateTime @updatedAt
 
   appointments Appointment[]
+  triages      Triage[]
 }

@@ -8,7 +8,7 @@ import type { LogoutMutationResponse, Logout401 } from "../models/Logout";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 
 function getLogoutUrl() {
-  const res = { method: 'DELETE', url: `http://localhost:8000/api/auth/logout` as const }
+  const res = { method: 'DELETE', url: `/api/auth/logout` as const }
   return res
 }
 

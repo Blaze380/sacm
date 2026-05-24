@@ -4,29 +4,44 @@ import { getApiErrorMessage } from "@/lib/api/errors";
 import { getCurrentUser } from "@/lib/auth/user";
 import { submitBookConsultation } from "@/lib/book-consultation/submit";
 import {
-  bookConsultationDefaultValues,
-  bookConsultationFormSchema,
+  getDefaultValuesForMode,
   getStepsForMode,
+  getWizardSchema,
   STEP_FIELDS,
   STEP_SCHEMAS,
+  type BookConsultationFormData,
   type BookConsultationFormValues,
   type BookConsultationMode,
+  type ReferralDefaults,
   type WizardStepId,
 } from "@/lib/validation/book-consultation-schemas";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export function useBookConsultationWizard(mode: BookConsultationMode) {
+export type ReferralWizardContext = ReferralDefaults;
+
+export function useBookConsultationWizard(
+  mode: BookConsultationMode,
+  referral?: ReferralWizardContext,
+) {
   const [stepIndex, setStepIndex] = useState(0);
   const [consultationTypes, setConsultationTypes] = useState<
     ConsultationTypeItem[]
   >([]);
-  const [isLoadingOptions, setIsLoadingOptions] = useState(mode === "DIRECT");
+  const loadsScheduleOptions = mode === "DIRECT" || mode === "REFERRAL";
+  const [isLoadingOptions, setIsLoadingOptions] = useState(loadsScheduleOptions);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  const defaultValues = useMemo(
+    () => getDefaultValuesForMode(mode, referral),
+    [mode, referral],
+  );
+
   const form = useForm<BookConsultationFormValues>({
-    defaultValues: { ...bookConsultationDefaultValues, mode },
-    mode: "onChange",
+    defaultValues,
+    mode: "onTouched",
+    shouldUnregister: false,
+    shouldFocusError: true,
   });
 
   const steps = useMemo(() => getStepsForMode(mode), [mode]);
@@ -35,7 +50,7 @@ export function useBookConsultationWizard(mode: BookConsultationMode) {
   const isFirstStep = stepIndex === 0;
 
   useEffect(() => {
-    if (mode !== "DIRECT") {
+    if (!loadsScheduleOptions) {
       return;
     }
 
@@ -60,7 +75,7 @@ export function useBookConsultationWizard(mode: BookConsultationMode) {
     return () => {
       cancelled = true;
     };
-  }, [mode]);
+  }, [loadsScheduleOptions]);
 
   useEffect(() => {
     setStepIndex((current) => {
@@ -74,19 +89,28 @@ export function useBookConsultationWizard(mode: BookConsultationMode) {
   const validateCurrentStep = useCallback(async () => {
     const values = form.getValues();
     const schema = STEP_SCHEMAS[currentStep];
-    const parsed = schema.safeParse(values);
+    const fields = STEP_FIELDS[currentStep];
+    const stepValues = Object.fromEntries(
+      fields.map((key) => [key, values[key]]),
+    );
+    const parsed = schema.safeParse(stepValues);
 
     for (const field of STEP_FIELDS[currentStep]) {
       form.clearErrors(field);
     }
 
     if (!parsed.success) {
+      let focused = false;
       for (const issue of parsed.error.issues) {
         const field = issue.path[0];
         if (typeof field === "string") {
           form.setError(field as keyof BookConsultationFormValues, {
             message: issue.message,
           });
+          if (!focused) {
+            form.setFocus(field as keyof BookConsultationFormValues);
+            focused = true;
+          }
         }
       }
       return false;
@@ -119,41 +143,56 @@ export function useBookConsultationWizard(mode: BookConsultationMode) {
     return true;
   }, [isFirstStep]);
 
-  const submit = useCallback(async () => {
+  const submit = useCallback(async (): Promise<boolean> => {
     setSubmitError(null);
-    const valid = await validateCurrentStep();
-    if (!valid) {
+    const stepValid = await validateCurrentStep();
+    if (!stepValid) {
       return false;
     }
 
-    const parsed = bookConsultationFormSchema.safeParse(form.getValues());
+    const schema = getWizardSchema(mode);
+    const parsed = schema.safeParse(form.getValues());
     if (!parsed.success) {
+      let focused = false;
       for (const issue of parsed.error.issues) {
         const field = issue.path[0];
         if (typeof field === "string") {
           form.setError(field as keyof BookConsultationFormValues, {
             message: issue.message,
           });
+          if (!focused) {
+            form.setFocus(field as keyof BookConsultationFormValues);
+            focused = true;
+          }
         }
       }
       return false;
     }
 
-    try {
-      const user = await getCurrentUser();
-      await submitBookConsultation(parsed.data, user.id);
-      return true;
-    } catch (error) {
-      setSubmitError(getApiErrorMessage(error));
-      return false;
-    }
-  }, [form, validateCurrentStep]);
+    const payload = parsed.data as BookConsultationFormData;
+
+    return new Promise<boolean>((resolve) => {
+      form.handleSubmit(
+        async () => {
+          try {
+            const user = await getCurrentUser();
+            await submitBookConsultation(payload, user.id);
+            resolve(true);
+          } catch (error) {
+            setSubmitError(getApiErrorMessage(error));
+            resolve(false);
+          }
+        },
+        () => resolve(false),
+      )();
+    });
+  }, [form, mode, validateCurrentStep]);
 
   const resetWizard = useCallback(() => {
-    form.reset({ ...bookConsultationDefaultValues, mode });
+    form.reset(getDefaultValuesForMode(mode, referral));
     setStepIndex(0);
     setSubmitError(null);
-  }, [form, mode]);
+  }, [form, mode, referral]);
 
   return {
     form,

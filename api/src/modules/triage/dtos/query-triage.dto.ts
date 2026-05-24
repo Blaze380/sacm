@@ -1,6 +1,6 @@
 import { IsOptional, IsString, IsNumber, ValidateNested, Max, IsNotEmpty, IsEnum } from "class-validator";
 import { Type, Transform } from "class-transformer";
-import { TriageStatus } from "@prisma/client";
+import { TriageStatus, PriorityLevel } from "@prisma/client";
 
 class StringFilter {
   @IsOptional()
@@ -69,7 +69,7 @@ export default class TriageQueryDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => StringFilter)
-  symptomTaken?: StringFilter;
+  symptom?: StringFilter;
 
   @IsOptional()
   @ValidateNested()
@@ -94,6 +94,20 @@ export default class TriageQueryDto {
   @ValidateNested()
   @Type(() => UserForQueryTriageDto)
   analyzedBy?: UserForQueryTriageDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UserForQueryTriageDto)
+  specialty?: UserForQueryTriageDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UserForQueryTriageDto)
+  consultationType?: UserForQueryTriageDto;
+
+  @IsOptional()
+  @IsEnum(PriorityLevel)
+  priority?: PriorityLevel;
 
   @IsOptional()
   @ValidateNested()

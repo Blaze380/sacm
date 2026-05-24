@@ -12,7 +12,12 @@ import { login } from '@/gen/clients/login'
 import { getMe } from '@/gen/clients/getMe'
 import { apiClient } from '@/lib/api/client'
 import { getApiErrorMessage } from '@/lib/api/errors'
-import { isAdmin } from '@/lib/auth/guards'
+import {
+  canAccessPath,
+  canAccessStaffPanel,
+  getDefaultStaffRoute,
+} from '@/lib/auth/guards'
+import type { AuthUser } from '@/lib/auth/guards'
 import { persistSessionCookie, setAccessToken } from '@/lib/auth/session'
 
 export function LoginForm() {
@@ -36,13 +41,19 @@ export function LoginForm() {
       await persistSessionCookie(accessToken)
 
       const me = await getMe({ client: apiClient })
-      if (!isAdmin(me as any)) {
-        toast.error('Apenas administradores podem aceder a esta área.')
+      const authUser = me as AuthUser
+      if (!canAccessStaffPanel(authUser)) {
+        toast.error('Apenas administradores ou recepcionistas podem aceder a esta área.')
         return
       }
 
-      const from = searchParams.get('from') ?? '/admin/especialidades'
-      router.replace(from.startsWith('/admin') ? from : '/admin/especialidades')
+      const defaultRoute = getDefaultStaffRoute(authUser.role)
+      const from = searchParams.get('from') ?? defaultRoute
+      const target =
+        from.startsWith('/admin') && canAccessPath(authUser, from)
+          ? from
+          : defaultRoute
+      router.replace(target)
       router.refresh()
     } catch (error) {
       toast.error(getApiErrorMessage(error))
@@ -55,7 +66,7 @@ export function LoginForm() {
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Administração SACM</CardTitle>
-        <CardDescription>Inicie sessão com a sua conta de administrador.</CardDescription>
+        <CardDescription>Inicie sessão com a sua conta de staff.</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
