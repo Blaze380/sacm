@@ -9,7 +9,7 @@ model Appointment {
   consultationTypeId String
   consultationType   ConsultationType @relation(fields: [consultationTypeId], references: [id])
   doctorId    String?
-  doctor      User?             @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  doctor      Doctor?           @relation(fields: [doctorId], references: [id])
   triageId    String?
   triage      Triage?           @relation(fields: [triageId], references: [id])
   notes       String?

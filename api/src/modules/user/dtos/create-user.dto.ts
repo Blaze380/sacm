@@ -6,13 +6,10 @@ import {
   IsNotEmpty,
   IsBoolean,
   IsOptional,
-  IsArray,
-  ValidateNested,
   IsEnum,
+  IsIn,
 } from 'class-validator'
-import { Type } from "class-transformer";
-import { UserRole } from "@prisma/client"
-
+import { Province, UserRole } from '@prisma/client'
 
 export default class CreateUserDto {
   @IsString()
@@ -38,5 +35,32 @@ export default class CreateUserDto {
   isActive?: boolean = true
 
   @IsEnum(UserRole)
+  @IsIn([UserRole.RECEPCIONISTA], {
+    message: 'Only RECEPCIONISTA users can be created through this endpoint',
+  })
   role!: UserRole
+
+  @IsString()
+  @IsOptional()
+  firstName?: string
+
+  @IsString()
+  @IsOptional()
+  lastName?: string
+
+  @IsString()
+  @IsOptional()
+  phone?: string
+
+  @IsEnum(Province)
+  @IsOptional()
+  province?: Province
+
+  @IsString()
+  @IsOptional()
+  city?: string
+
+  @IsString()
+  @IsOptional()
+  neighborhood?: string
 }

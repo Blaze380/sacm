@@ -1,0 +1,149 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "specialtyId",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "phone": { "type": "string" },
+    "email": { "type": "string" },
+    "specialtyId": { "type": "string", "format": "uuid" },
+    "availability": {
+      "type": "object",
+      "required": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ],
+      "properties": {
+        "monday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        },
+        "tuesday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        },
+        "wednesday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        },
+        "thursday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        },
+        "friday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        },
+        "saturday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        },
+        "sunday": {
+          "type": "object",
+          "required": ["start", "end", "isAvailable"],
+          "properties": {
+            "start": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "isAvailable": { "type": "boolean" }
+          },
+          "x-readme-ref-name": "DayAvailability"
+        }
+      },
+      "x-readme-ref-name": "DoctorAvailability"
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "x-readme-ref-name": "Doctor"
+}

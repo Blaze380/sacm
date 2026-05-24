@@ -50,6 +50,12 @@ class TriageForQueryAppointmentDto {
   id!: string;
 }
 
+class DoctorForQueryAppointmentDto {
+  @IsNotEmpty()
+  @IsString()
+  id!: string;
+}
+
 export default class AppointmentQueryDto {
   @IsOptional()
   @IsNumber()
@@ -96,8 +102,8 @@ export default class AppointmentQueryDto {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => UserForQueryAppointmentDto)
-  doctor?: UserForQueryAppointmentDto;
+  @Type(() => DoctorForQueryAppointmentDto)
+  doctor?: DoctorForQueryAppointmentDto;
 
   @IsOptional()
   @ValidateNested()

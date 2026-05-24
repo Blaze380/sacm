@@ -1,10 +1,8 @@
 model Specialty {
-  id    String @id @default(uuid())
-  name  String
-  users User[]
-
+  id           String        @id @default(uuid())
+  name         String
+  doctors      Doctor[]
   appointments Appointment[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
-

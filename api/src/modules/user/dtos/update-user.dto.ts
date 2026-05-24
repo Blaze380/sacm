@@ -1,19 +1,15 @@
 import 'reflect-metadata'
-import { 
-  IsString, 
-  MinLength, 
-  Matches, 
-  IsNotEmpty, 
-  IsBoolean, 
+import {
+  IsString,
+  MinLength,
+  Matches,
+  IsNotEmpty,
+  IsBoolean,
   IsOptional,
-  IsArray,
-  ValidateNested,
-  IsEnum
+  IsEnum,
+  IsIn,
 } from 'class-validator'
-import { Type } from 'class-transformer'
-import apiActions from "../../../utils/validation/api-actions"
-import { UserRole } from "@prisma/client"
-
+import { Province, UserRole } from '@prisma/client'
 
 export default class UpdateUserDto {
   @IsString()
@@ -41,6 +37,33 @@ export default class UpdateUserDto {
   isActive?: boolean
 
   @IsEnum(UserRole)
+  @IsIn([UserRole.RECEPCIONISTA], {
+    message: 'Only RECEPCIONISTA users can be updated through this endpoint',
+  })
   @IsOptional()
   role?: UserRole
+
+  @IsString()
+  @IsOptional()
+  firstName?: string
+
+  @IsString()
+  @IsOptional()
+  lastName?: string
+
+  @IsString()
+  @IsOptional()
+  phone?: string
+
+  @IsEnum(Province)
+  @IsOptional()
+  province?: Province
+
+  @IsString()
+  @IsOptional()
+  city?: string
+
+  @IsString()
+  @IsOptional()
+  neighborhood?: string
 }

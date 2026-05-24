@@ -1,8 +1,9 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Toaster } from "sonner"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})
 
@@ -18,12 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="pt"
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   )

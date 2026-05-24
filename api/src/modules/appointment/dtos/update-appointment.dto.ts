@@ -26,6 +26,12 @@ class TriageForUpdateAppointmentDto {
   id!: string;
 }
 
+class DoctorForUpdateAppointmentDto {
+  @IsNotEmpty()
+  @IsString()
+  id!: string;
+}
+
 export default class UpdateAppointmentDto {
   @IsOptional()
   @IsDate()
@@ -48,8 +54,8 @@ export default class UpdateAppointmentDto {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => UserForUpdateAppointmentDto)
-  doctor?: UserForUpdateAppointmentDto;
+  @Type(() => DoctorForUpdateAppointmentDto)
+  doctor?: DoctorForUpdateAppointmentDto;
 
   @IsOptional()
   @ValidateNested()
