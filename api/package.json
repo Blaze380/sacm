@@ -8,6 +8,7 @@
     "build": "arkos build",
     "start": "arkos start",
     "arkos": "arkos",
+    "postinstall": "arkos prisma generate && prisma generate",
     "seed":"tsx src/scripts/seed.dev.ts"
   },
   "prisma": {
