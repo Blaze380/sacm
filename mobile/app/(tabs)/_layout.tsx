@@ -13,11 +13,21 @@ const tabBarStyle = {
   borderTopColor: "#e5e7eb",
 } as const;
 
-function getConsultationsTabBarStyle(
-  route: Parameters<NonNullable<Parameters<typeof Tabs.Screen>[0]["options"]>>[0]["route"],
-) {
+type TabRoute = Parameters<
+  NonNullable<Parameters<typeof Tabs.Screen>[0]["options"]>
+>[0]["route"];
+
+function getConsultationsTabBarStyle(route: TabRoute) {
   const focused = getFocusedRouteNameFromRoute(route);
   if (focused === "new") {
+    return { display: "none" as const };
+  }
+  return tabBarStyle;
+}
+
+function getAccountTabBarStyle(route: TabRoute) {
+  const focused = getFocusedRouteNameFromRoute(route);
+  if (focused && focused !== "index") {
     return { display: "none" as const };
   }
   return tabBarStyle;
@@ -58,13 +68,14 @@ export default function TabLayout() {
         })}
       />
       <Tabs.Screen
-        name="account/index"
-        options={{
+        name="account"
+        options={({ route }) => ({
           title: "Conta",
           tabBarIcon: ({ color, size }) => (
             <User color={color} size={size ?? 24} />
           ),
-        }}
+          tabBarStyle: getAccountTabBarStyle(route),
+        })}
       />
     </Tabs>
   );

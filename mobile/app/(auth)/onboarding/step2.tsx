@@ -1,9 +1,8 @@
+import { AccountProfileAddressFields } from "@/components/account/account-profile-address-fields";
 import { OnboardingScreen } from "@/components/onboarding/onboarding-screen";
-import { ControllerInput } from "@/components/ui/controlled-input";
-import { ControlledSelect } from "@/components/ui/controlled-select";
+import type { GetMe200ProvinceEnumKey } from "@/gen/models/GetMe";
 import { getCurrentUser, updateCurrentUser } from "@/lib/auth/user";
 import { getApiErrorMessage } from "@/lib/api/errors";
-import { PROVINCE_OPTIONS } from "@/lib/onboarding/provinces";
 import {
   onboardingStep2Schema,
   type OnboardingStep2FormData,
@@ -18,18 +17,15 @@ export default function OnboardingStep2() {
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<OnboardingStep2FormData>({
+  const form = useForm<OnboardingStep2FormData>({
     resolver: zodResolver(onboardingStep2Schema),
     defaultValues: {
       city: "",
       neighborhood: "",
     },
   });
+
+  const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = form;
 
   const loadProfile = useCallback(async () => {
     try {
@@ -54,7 +50,7 @@ export default function OnboardingStep2() {
     setSubmitError(null);
     try {
       await updateCurrentUser({
-        province: data.province,
+        province: data.province as GetMe200ProvinceEnumKey,
         city: data.city.trim(),
         neighborhood: data.neighborhood.trim(),
       });
@@ -73,28 +69,10 @@ export default function OnboardingStep2() {
       isLoading={isSubmitting}
       submitError={submitError}
     >
-      <ControlledSelect
+      <AccountProfileAddressFields
         control={control}
-        name="province"
-        options={PROVINCE_OPTIONS}
-        placeholder="Província"
-        error={errors.province?.message}
-      />
-      <ControllerInput
-        control={control}
-        name="city"
-        full
-        placeholder="Cidade"
-        textContentType="addressCity"
-        error={errors.city?.message}
-      />
-      <ControllerInput
-        control={control}
-        name="neighborhood"
-        full
-        placeholder="Bairro"
-        textContentType="fullStreetAddress"
-        error={errors.neighborhood?.message}
+        errors={errors}
+        showSectionTitle={false}
       />
     </OnboardingScreen>
   );

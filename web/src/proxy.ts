@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 const COOKIE_NAME = 'sacm_admin_token'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (!pathname.startsWith('/admin')) {
