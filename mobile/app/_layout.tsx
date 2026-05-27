@@ -3,15 +3,10 @@ import { DefaultTheme, ThemeProvider, useTheme } from "@react-navigation/native"
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { Text } from "@/components/ui/text";
 import { setAuthRouter } from "@/lib/auth/auth-navigation";
-import {
-  getResolvedOnboardingRoute,
-  isOnTargetOnboardingRoute,
-  shouldRedirectToOnboarding,
-} from "@/lib/onboarding/redirect";
 import { themeColors } from "@/lib/theme-colors";
 import { SessionProvider, useSession } from "@/providers/session-provider";
 import { PortalHost } from "@rn-primitives/portal";
@@ -30,45 +25,10 @@ function RootNavigator() {
   const { colors } = useTheme();
   const { user, isLoading } = useSession();
   const showDevSitemapButton = !segments.includes("new");
-  const onboardingRedirectRef = useRef<string | null>(null);
 
   useEffect(() => {
     setAuthRouter(router);
   }, [router]);
-
-  useEffect(() => {
-    if (isLoading || !user) return;
-
-    const segmentKey = segments.join("/");
-    if (onboardingRedirectRef.current === segmentKey) return;
-
-    onboardingRedirectRef.current = segmentKey;
-
-    let cancelled = false;
-
-    void (async () => {
-      const needsOnboarding = await shouldRedirectToOnboarding(user);
-      if (cancelled) return;
-
-      if (!needsOnboarding) {
-        if (segments.includes("onboarding")) {
-          router.replace("/(tabs)/home");
-        }
-        return;
-      }
-
-      const target = await getResolvedOnboardingRoute(user);
-      if (cancelled) return;
-
-      if (!isOnTargetOnboardingRoute(segments, target)) {
-        router.replace(target);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isLoading, user, segments, router]);
 
   if (isLoading) {
     return (

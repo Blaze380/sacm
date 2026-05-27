@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { getCurrentUser } from "@/lib/auth/user";
 import { themeColors } from "@/lib/theme-colors";
+import * as SecureStore from "expo-secure-store";
 import {
   clearOnboardingDraftsAndStep,
   setOnboardingCurrentStep,
@@ -20,6 +21,7 @@ export default function OnboardingStep3() {
 
   useEffect(() => {
     void setOnboardingCurrentStep("step3");
+    void SecureStore.setItemAsync("onboarding_finished", "true");
   }, []);
 
   useFocusEffect(
