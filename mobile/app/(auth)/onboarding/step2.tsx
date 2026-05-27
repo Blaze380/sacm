@@ -1,17 +1,22 @@
 import { AccountProfileAddressFields } from "@/components/account/account-profile-address-fields";
 import { OnboardingScreen } from "@/components/onboarding/onboarding-screen";
+import { useOnboardingStepForm } from "@/hooks/use-onboarding-step-form";
 import type { GetMe200ProvinceEnumKey } from "@/gen/models/GetMe";
-import { getCurrentUser, updateCurrentUser } from "@/lib/auth/user";
+import { updateCurrentUser } from "@/lib/auth/user";
 import { getApiErrorMessage } from "@/lib/api/errors";
+import { ONBOARDING_STEP2_DEFAULT_VALUES } from "@/lib/onboarding/form-defaults";
+import {
+  clearOnboardingStep2Draft,
+  setOnboardingCurrentStep,
+} from "@/lib/onboarding/storage";
 import {
   onboardingStep2Schema,
   type OnboardingStep2FormData,
 } from "@/lib/validation/onboarding-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useFocusEffect } from "@react-navigation/native";
 
 export default function OnboardingStep2() {
   const router = useRouter();
@@ -19,32 +24,16 @@ export default function OnboardingStep2() {
 
   const form = useForm<OnboardingStep2FormData>({
     resolver: zodResolver(onboardingStep2Schema),
-    defaultValues: {
-      city: "",
-      neighborhood: "",
-    },
+    defaultValues: ONBOARDING_STEP2_DEFAULT_VALUES,
   });
 
-  const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = form;
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = form;
 
-  const loadProfile = useCallback(async () => {
-    try {
-      const user = await getCurrentUser();
-      reset({
-        province: user.province,
-        city: user.city ?? "",
-        neighborhood: user.neighborhood ?? "",
-      });
-    } catch {
-      // ignore preload errors
-    }
-  }, [reset]);
-
-  useFocusEffect(
-    useCallback(() => {
-      void loadProfile();
-    }, [loadProfile]),
-  );
+  const { isHydrating } = useOnboardingStepForm({ step: "step2", form });
 
   async function onSubmit(data: OnboardingStep2FormData) {
     setSubmitError(null);
@@ -54,6 +43,8 @@ export default function OnboardingStep2() {
         city: data.city.trim(),
         neighborhood: data.neighborhood.trim(),
       });
+      await clearOnboardingStep2Draft();
+      await setOnboardingCurrentStep("step3");
       router.replace("/(auth)/onboarding/step3");
     } catch (error) {
       setSubmitError(getApiErrorMessage(error));
@@ -67,13 +58,16 @@ export default function OnboardingStep2() {
       buttonLabel="Finalizar"
       onSubmit={handleSubmit(onSubmit)}
       isLoading={isSubmitting}
+      isLoadingContent={isHydrating}
       submitError={submitError}
     >
-      <AccountProfileAddressFields
-        control={control}
-        errors={errors}
-        showSectionTitle={false}
-      />
+      {!isHydrating ? (
+        <AccountProfileAddressFields
+          control={control}
+          errors={errors}
+          showSectionTitle={false}
+        />
+      ) : null}
     </OnboardingScreen>
   );
 }

@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/api-client";
 import { unwrapPaginated } from "@/lib/api/pagination";
 import { unwrapApiData } from "@/lib/api/unwrap";
+import type { FindTriageById200 } from "@/gen/models/FindTriageById";
 import type { CreateTriage201 } from "@/gen/models/CreateTriage";
 import type { CreateTriageMutationRequest } from "@/gen/models/CreateTriage";
 import type { FindTriages200 } from "@/gen/models/FindTriages";
@@ -67,6 +68,28 @@ export async function fetchTriageById(
 ): Promise<TriageItem | null> {
   const items = await fetchPatientTriages(patientId);
   return items.find((t) => t.id === triageId) ?? null;
+}
+
+export async function fetchTriageByIdFromApi(
+  triageId: string,
+): Promise<TriageItem> {
+  const res = await apiClient.get<
+    FindTriageById200 | { data: FindTriageById200 }
+  >(`/api/triages/${triageId}`);
+  return unwrapApiData(res.data) as TriageItem;
+}
+
+export function triageNeedsDetailFetch(triage: TriageItem): boolean {
+  if (triage.status === "CANCELADO" && !triage.rejectionReason?.trim()) {
+    return true;
+  }
+  if (
+    triage.status === "REENCAMINHADO" &&
+    (!triage.specialtyId || !triage.consultationTypeId)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 export async function createPatientTriage(

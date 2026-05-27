@@ -5,12 +5,12 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { HapticTab } from "@/components/haptic-tab";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-
-const TAB_ACTIVE_COLOR = "#24b447";
+import { createNestedStackTabListeners } from "@/lib/navigation/tab-stack-reset";
 
 const tabBarStyle = {
   borderTopWidth: 1,
-  borderTopColor: "#e5e7eb",
+  borderTopColor: Colors.light.border,
+  backgroundColor: Colors.light.background,
 } as const;
 
 type TabRoute = Parameters<
@@ -19,7 +19,7 @@ type TabRoute = Parameters<
 
 function getConsultationsTabBarStyle(route: TabRoute) {
   const focused = getFocusedRouteNameFromRoute(route);
-  if (focused === "new") {
+  if (focused && focused !== "index") {
     return { display: "none" as const };
   }
   return tabBarStyle;
@@ -35,14 +35,14 @@ function getAccountTabBarStyle(route: TabRoute) {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const inactiveColor = Colors[colorScheme ?? "light"].tabIconDefault;
+  const palette = Colors[colorScheme ?? "light"];
 
   return (
     <Tabs
       initialRouteName="home/index"
       screenOptions={{
-        tabBarActiveTintColor: TAB_ACTIVE_COLOR,
-        tabBarInactiveTintColor: inactiveColor,
+        tabBarActiveTintColor: palette.tint,
+        tabBarInactiveTintColor: palette.tabIconDefault,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle,
@@ -59,6 +59,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="consultations"
+        listeners={createNestedStackTabListeners("/(tabs)/consultations")}
         options={({ route }) => ({
           title: "Consultas",
           tabBarIcon: ({ color, size }) => (
@@ -69,6 +70,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="account"
+        listeners={createNestedStackTabListeners("/(tabs)/account")}
         options={({ route }) => ({
           title: "Conta",
           tabBarIcon: ({ color, size }) => (

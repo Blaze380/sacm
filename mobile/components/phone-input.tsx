@@ -34,8 +34,8 @@ export function PhoneInput<T extends FieldValues>({
 
   return (
     <View className={cn("w-full", className)}>
-      <View className="flex-row items-center border border-input rounded-md bg-background overflow-hidden">
-        <View className="flex-row items-center gap-1 px-3 border-r border-input h-10">
+      <View className="flex-row items-center border border-border rounded-lg bg-card overflow-hidden">
+        <View className="flex-row items-center gap-1 px-3 border-r border-border h-10">
           <Text className="text-base">🇲🇿</Text>
           <Text className="text-foreground text-base">{COUNTRY_CODE}</Text>
         </View>

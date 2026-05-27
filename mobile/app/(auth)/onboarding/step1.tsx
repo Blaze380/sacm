@@ -1,20 +1,22 @@
 import { AccountProfilePersonalFields } from "@/components/account/account-profile-personal-fields";
 import { OnboardingScreen } from "@/components/onboarding/onboarding-screen";
-import { getCurrentUser, updateCurrentUser } from "@/lib/auth/user";
+import { useOnboardingStepForm } from "@/hooks/use-onboarding-step-form";
 import { getApiErrorMessage } from "@/lib/api/errors";
+import { updateCurrentUser } from "@/lib/auth/user";
 import {
-  normalizeMozPhone,
-  parseStoredPhoneToLocal,
-} from "@/lib/phone/mozambique";
+  clearOnboardingStep1Draft,
+  setOnboardingCurrentStep,
+} from "@/lib/onboarding/storage";
+import { ONBOARDING_STEP1_DEFAULT_VALUES } from "@/lib/onboarding/form-defaults";
+import { normalizeMozPhone } from "@/lib/phone/mozambique";
 import {
   onboardingStep1Schema,
   type OnboardingStep1FormData,
 } from "@/lib/validation/onboarding-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useFocusEffect } from "@react-navigation/native";
 
 export default function OnboardingStep1() {
   const router = useRouter();
@@ -22,36 +24,18 @@ export default function OnboardingStep1() {
 
   const form = useForm<OnboardingStep1FormData>({
     resolver: zodResolver(onboardingStep1Schema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      phone: "+258",
-    },
+    defaultValues: ONBOARDING_STEP1_DEFAULT_VALUES,
   });
 
-  const { control, handleSubmit, setValue, watch, reset, formState: { errors, isSubmitting } } = form;
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
+  } = form;
 
-  const loadProfile = useCallback(async () => {
-    try {
-      const user = await getCurrentUser();
-      reset({
-        firstName: user.firstName ?? "",
-        lastName: user.lastName ?? "",
-        phone: user.phone
-          ? `+258${parseStoredPhoneToLocal(user.phone)}`
-          : "",
-        birthDate: user.birthDate ? new Date(user.birthDate) : undefined,
-      });
-    } catch {
-      // ignore preload errors
-    }
-  }, [reset]);
-
-  useFocusEffect(
-    useCallback(() => {
-      void loadProfile();
-    }, [loadProfile]),
-  );
+  const { isHydrating } = useOnboardingStepForm({ step: "step1", form });
 
   async function onSubmit(data: OnboardingStep1FormData) {
     setSubmitError(null);
@@ -62,6 +46,8 @@ export default function OnboardingStep1() {
         phone: normalizeMozPhone(data.phone),
         birthDate: data.birthDate.toISOString(),
       });
+      await clearOnboardingStep1Draft();
+      await setOnboardingCurrentStep("step2");
       router.push("/(auth)/onboarding/step2");
     } catch (error) {
       setSubmitError(getApiErrorMessage(error));
@@ -75,15 +61,18 @@ export default function OnboardingStep1() {
       buttonLabel="Próximo"
       onSubmit={handleSubmit(onSubmit)}
       isLoading={isSubmitting}
+      isLoadingContent={isHydrating}
       submitError={submitError}
     >
-      <AccountProfilePersonalFields
-        control={control}
-        errors={errors}
-        watch={watch}
-        setValue={setValue}
-        showSectionTitle={false}
-      />
+      {!isHydrating ? (
+        <AccountProfilePersonalFields
+          control={control}
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+          showSectionTitle={false}
+        />
+      ) : null}
     </OnboardingScreen>
   );
 }

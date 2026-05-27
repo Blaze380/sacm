@@ -11,9 +11,16 @@ type Props = {
   isLoading: boolean;
   error: string | null;
   onRetry: () => void;
+  onItemPress?: (item: HomeUpcomingItem) => void;
 };
 
-export function UpcomingList({ items, isLoading, error, onRetry }: Props) {
+export function UpcomingList({
+  items,
+  isLoading,
+  error,
+  onRetry,
+  onItemPress,
+}: Props) {
   if (isLoading) {
     return (
       <View className="gap-3">
@@ -49,9 +56,17 @@ export function UpcomingList({ items, isLoading, error, onRetry }: Props) {
     <View className="gap-3">
       {items.map((item) =>
         item.kind === "appointment" ? (
-          <AppointmentCard key={`appt-${item.appointment.id}`} item={item} />
+          <AppointmentCard
+            key={`appt-${item.appointment.id}`}
+            item={item}
+            onPress={onItemPress ? () => onItemPress(item) : undefined}
+          />
         ) : (
-          <TriageCard key={`triage-${item.triage.id}`} item={item} />
+          <TriageCard
+            key={`triage-${item.triage.id}`}
+            item={item}
+            onPress={onItemPress ? () => onItemPress(item) : undefined}
+          />
         ),
       )}
     </View>

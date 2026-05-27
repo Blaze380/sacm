@@ -3,11 +3,11 @@ import { ControllerInput } from "@/components/ui/controlled-input";
 import { Text } from "@/components/ui/text";
 import { getApiErrorMessage } from "@/lib/api/errors";
 import { signIn } from "@/lib/auth/login";
-import { getCurrentUser } from "@/lib/auth/user";
 import {
-  getOnboardingRoute,
-  isOnboardingComplete,
-} from "@/lib/onboarding/progress";
+  getResolvedOnboardingRoute,
+  shouldRedirectToOnboarding,
+} from "@/lib/onboarding/redirect";
+import { useSession } from "@/providers/session-provider";
 import { loginSchema, type LoginFormData } from "@/lib/validation/login-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useRouter } from "expo-router";
@@ -17,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Login() {
   const router = useRouter();
+  const { refreshSession } = useSession();
   const {
     control,
     handleSubmit,
@@ -33,12 +34,13 @@ export default function Login() {
   async function onSubmit(data: LoginFormData) {
     try {
       await signIn(data.email, data.password);
-      const user = await getCurrentUser();
+      const user = await refreshSession();
+      if (!user) return;
 
-      if (isOnboardingComplete(user)) {
-        router.replace("/(tabs)/home");
+      if (await shouldRedirectToOnboarding(user)) {
+        router.replace(await getResolvedOnboardingRoute(user));
       } else {
-        router.replace(getOnboardingRoute(user));
+        router.replace("/(tabs)/home");
       }
     } catch (error) {
       const message = getApiErrorMessage(error);

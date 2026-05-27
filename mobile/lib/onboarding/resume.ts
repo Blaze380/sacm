@@ -24,5 +24,6 @@ export function shouldResumeRedirect(
     return !currentPath.includes("(tabs)");
   }
 
-  return !currentPath.includes(targetRoute.split("/").pop() ?? "");
+  const targetSegment = targetRoute.split("/").pop() ?? "";
+  return !currentPath.includes(targetSegment);
 }

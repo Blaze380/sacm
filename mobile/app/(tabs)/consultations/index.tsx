@@ -2,6 +2,7 @@ import { ConsultationsFilters } from "@/components/consultations/consultations-f
 import { ConsultationsHero } from "@/components/consultations/consultations-hero";
 import { ConsultationsList } from "@/components/consultations/consultations-list";
 import { useBookingModeSheet } from "@/hooks/use-booking-mode-sheet";
+import { useConsultationDetailSheet } from "@/hooks/use-consultation-detail-sheet";
 import { useConsultationsData } from "@/hooks/use-consultations-data";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,6 +11,8 @@ export default function ConsultationsTab() {
   const { present, BookingModeSheet } = useBookingModeSheet();
   const {
     filteredItems,
+    specialtyMap,
+    consultationTypeMap,
     search,
     setSearch,
     statusFilter,
@@ -18,6 +21,10 @@ export default function ConsultationsTab() {
     error,
     refetch,
   } = useConsultationsData();
+  const { openDetail, DetailSheet } = useConsultationDetailSheet({
+    specialtyMap,
+    consultationTypeMap,
+  });
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={["top"]}>
@@ -41,9 +48,11 @@ export default function ConsultationsTab() {
           isLoading={isLoading}
           error={error}
           onRetry={refetch}
+          onItemPress={openDetail}
         />
       </ScrollView>
       <BookingModeSheet />
+      <DetailSheet />
     </SafeAreaView>
   );
 }

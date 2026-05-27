@@ -14,6 +14,11 @@ export async function fetchSpecialties(): Promise<SpecialtyItem[]> {
   return unwrapPaginated(res.data);
 }
 
+export async function fetchSpecialtyMap(): Promise<Record<string, string>> {
+  const items = await fetchSpecialties();
+  return Object.fromEntries(items.map((s) => [s.id, s.name]));
+}
+
 export async function fetchDefaultSpecialtyId(): Promise<string> {
   const fromEnv = process.env.EXPO_PUBLIC_DEFAULT_SPECIALTY_ID;
   if (fromEnv) {

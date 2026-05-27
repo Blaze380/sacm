@@ -1,5 +1,6 @@
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
+import { themeColors } from "@/lib/theme-colors";
 import { Check } from "lucide-react-native";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
@@ -67,11 +68,13 @@ export function WeekdayCheckStrip() {
               <View
                 className={cn(
                   "h-10 w-10 rounded-full border-2 items-center justify-center",
-                  isToday ? "border-primary" : "border-input",
+                  isToday ? "border-primary" : "border-border",
                   isChecked && "bg-primary border-primary",
                 )}
               >
-                {isChecked && <Check size={20} color="#fff" />}
+                {isChecked && (
+                  <Check size={20} color={themeColors.primaryForeground} />
+                )}
               </View>
             </Pressable>
           );

@@ -1,63 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { isInvalidSessionError } from "@/lib/auth/session-error";
-import { getCurrentUser } from "@/lib/auth/user";
-import { getAccessToken } from "@/lib/auth/session";
-import {
-  getOnboardingRoute,
-  isOnboardingComplete,
-} from "@/lib/onboarding/progress";
-import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { Link } from "expo-router";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LandingScreen() {
-  const router = useRouter();
-  const [checkingSession, setCheckingSession] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    void (async () => {
-      const token = await getAccessToken();
-      if (!token) {
-        if (!cancelled) setCheckingSession(false);
-        return;
-      }
-
-      try {
-        const user = await getCurrentUser();
-        if (cancelled) return;
-
-        if (isOnboardingComplete(user)) {
-          router.replace("/(tabs)/home");
-        } else {
-          router.replace(getOnboardingRoute(user));
-        }
-      } catch (error) {
-        if (!cancelled) {
-          // Interceptor trata sessão inválida; evita spinner infinito se o redirect falhar
-          if (!isInvalidSessionError(error)) {
-            setCheckingSession(false);
-          }
-        }
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [router]);
-
-  if (checkingSession) {
-    return (
-      <SafeAreaView className="bg-primary flex-1 items-center justify-center">
-        <ActivityIndicator color="#fff" />
-      </SafeAreaView>
-    );
-  }
-
   return (
     <SafeAreaView className="bg-primary flex-1 items-center justify-between p-4">
       <View className="flex items-center justify-center mt-32">

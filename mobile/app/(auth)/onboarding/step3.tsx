@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { getCurrentUser } from "@/lib/auth/user";
+import { themeColors } from "@/lib/theme-colors";
+import {
+  clearOnboardingDraftsAndStep,
+  setOnboardingCurrentStep,
+  setOnboardingFinished,
+} from "@/lib/onboarding/storage";
 import { useRouter } from "expo-router";
 import { CheckCircle } from "lucide-react-native";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -11,6 +17,10 @@ import { useFocusEffect } from "@react-navigation/native";
 export default function OnboardingStep3() {
   const router = useRouter();
   const [firstName, setFirstName] = useState("Utilizador");
+
+  useEffect(() => {
+    void setOnboardingCurrentStep("step3");
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -27,10 +37,16 @@ export default function OnboardingStep3() {
     }, []),
   );
 
+  async function handleStart() {
+    await setOnboardingFinished(true);
+    await clearOnboardingDraftsAndStep();
+    router.replace("/(tabs)/home");
+  }
+
   return (
-    <SafeAreaView className="flex-1 justify-between p-4">
+    <SafeAreaView className="flex-1 justify-between p-4 bg-background">
       <View className="flex-1 items-center justify-center px-8 gap-6">
-        <CheckCircle size={80} color="#84cc16" />
+        <CheckCircle size={80} color={themeColors.primary} />
         <Text className="text-3xl font-semibold text-center">
           Está preparado, {firstName}!
         </Text>
@@ -39,10 +55,7 @@ export default function OnboardingStep3() {
         </Text>
       </View>
       <View className="w-full px-6 pb-4">
-        <Button
-          className="w-full"
-          onPress={() => router.replace("/(tabs)/home")}
-        >
+        <Button className="w-full" onPress={() => void handleStart()}>
           <Text className="text-white">Começar</Text>
         </Button>
       </View>

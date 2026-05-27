@@ -5,6 +5,7 @@ import {
   type StatusFilterId,
 } from "@/lib/consultations/filters";
 import { cn } from "@/lib/utils";
+import { themeColors } from "@/lib/theme-colors";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Filter } from "lucide-react-native";
 import { useCallback, useMemo, useRef } from "react";
@@ -45,7 +46,7 @@ export function ConsultationsFilters({
                   "px-4 py-2 rounded-full border",
                   active
                     ? "bg-primary border-primary"
-                    : "bg-background border-input",
+                    : "bg-card border-border",
                 )}
               >
                 <Text
@@ -62,10 +63,10 @@ export function ConsultationsFilters({
         </ScrollView>
         <Pressable
           onPress={openSheet}
-          className="h-10 w-10 rounded-full border border-input items-center justify-center bg-background"
+          className="h-10 w-10 rounded-full border border-border items-center justify-center bg-card"
           accessibilityLabel="Mais filtros"
         >
-          <Filter size={18} color="#687076" />
+          <Filter size={18} color={themeColors.mutedIcon} />
         </Pressable>
       </View>
 

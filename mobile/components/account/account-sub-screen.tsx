@@ -1,4 +1,5 @@
 import { Text } from "@/components/ui/text";
+import { themeColors } from "@/lib/theme-colors";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import type { ReactNode } from "react";
@@ -32,7 +33,7 @@ export function AccountSubScreen({ title, children }: Props) {
             className="h-10 w-10 items-center justify-center -ml-2 active:opacity-70"
             accessibilityLabel="Voltar"
           >
-            <ChevronLeft size={24} color="#111827" />
+            <ChevronLeft size={24} color={themeColors.foreground} />
           </Pressable>
           <Text className="text-xl font-semibold flex-1">{title}</Text>
         </View>

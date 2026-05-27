@@ -71,7 +71,7 @@ export default function AccountTab() {
       <View className="flex-1 px-6 pt-8">
         <AccountHeader firstName={user?.firstName} email={user?.email} />
 
-        <View className="mt-8 rounded-xl border border-border bg-card px-4">
+        <View className="mt-8 rounded-xl bordera border-bordera abg-card px-4">
           <AccountMenuRow
             label="Dados pessoais"
             subtitle="Nome, contacto e morada"

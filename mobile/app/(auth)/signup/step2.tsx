@@ -16,8 +16,11 @@ import {
 import { getPasswordRuleStatus } from "@/lib/validation/password";
 import { registerAndLogin } from "@/lib/auth/signup";
 import { getApiErrorMessage } from "@/lib/api/errors";
+import { resetOnboardingForNewAccount } from "@/lib/onboarding/storage";
+import { useSession } from "@/providers/session-provider";
 
 export default function SignupStep2() {
+  const { refreshSession } = useSession();
   const params = useLocalSearchParams<{ email: string }>();
   const email = Array.isArray(params.email) ? params.email[0] : params.email;
   const router = useRouter();
@@ -60,6 +63,9 @@ export default function SignupStep2() {
     setSubmitError(null);
     try {
       await registerAndLogin(data.email, data.password);
+      await resetOnboardingForNewAccount();
+      const user = await refreshSession();
+      if (!user) return;
       ref.current?.dismiss();
       router.replace("/(auth)/onboarding/step1");
     } catch (error) {

@@ -1,4 +1,5 @@
 import { Text } from "@/components/ui/text";
+import { themeColors } from "@/lib/theme-colors";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react-native";
 import { Pressable, View } from "react-native";
@@ -36,7 +37,7 @@ export function AccountMenuRow({
       </View>
       <ChevronRight
         size={20}
-        color={destructive ? "#ef4444" : "#6b7280"}
+        color={destructive ? themeColors.destructive : themeColors.mutedIcon}
       />
     </Pressable>
   );

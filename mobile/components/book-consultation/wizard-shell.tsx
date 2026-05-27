@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { themeColors } from "@/lib/theme-colors";
 import { X } from "lucide-react-native";
 import { ReactNode } from "react";
 import {
@@ -53,7 +54,7 @@ export function WizardShell({
           className="h-10 w-10 rounded-full items-center justify-center"
           accessibilityLabel="Fechar"
         >
-          <X size={22} color="#11181C" />
+          <X size={22} color={themeColors.foreground} />
         </Pressable>
         <Text className="text-muted-foreground text-sm">
           {stepIndex + 1} / {stepCount}

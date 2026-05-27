@@ -66,7 +66,7 @@ export function AccountProfilePersonalFields<
       />
       <Pressable
         onPress={() => setShowDatePicker(true)}
-        className="border border-input rounded-md h-10 px-3 justify-center bg-background w-full"
+        className="border border-border rounded-lg h-10 px-3 justify-center bg-card w-full"
       >
         <Text
           className={
