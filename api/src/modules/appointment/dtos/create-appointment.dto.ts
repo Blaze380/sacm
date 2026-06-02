@@ -33,6 +33,7 @@ class DoctorForCreateAppointmentDto {
 }
 
 export default class CreateAppointmentDto {
+  @Type(() => Date)
   @IsDate()
   date!: Date;
 

@@ -34,6 +34,7 @@ class DoctorForUpdateAppointmentDto {
 
 export default class UpdateAppointmentDto {
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   date?: Date;
 
